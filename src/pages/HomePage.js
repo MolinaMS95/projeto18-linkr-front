@@ -5,7 +5,7 @@ import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import "../constants/font.css";
 import Post from "../components/Post.js";
-import Publish from "../components/Publish";
+import Publish from "../components/Publish.js";
 
 export default function HomePage(props) {
 
