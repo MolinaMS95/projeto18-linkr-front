@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import HashtagList from "./hashtagList.js"
+import HashtagList from "./HashtagList.js"
 
 export default function TrendingSidebar (){
 

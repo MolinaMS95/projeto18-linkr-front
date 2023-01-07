@@ -5,6 +5,7 @@ import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import "../constants/font.css";
 import Post from "../components/Post.js";
+import Publish from "../components/Publish";
 
 export default function HomePage(props) {
 
@@ -33,33 +34,7 @@ export default function HomePage(props) {
   return (
     <Container>
       <Title>timeline</Title>
-      <NewPost>
-        <LeftBox>
-          <UserImg src="https://static.displate.com/857x1200/displate/2021-04-09/b7b4d3e3a40c4dc0f212353ed79d997b_833c168276525a73bf78ff480e6a7578.jpg"></UserImg>
-        </LeftBox>
-        <RightBox>
-          <Prompt>What are you going to share today?</Prompt>
-          <Form onSubmit={handleSubmitPost} id="newPostForm">
-            <Field
-              placeholder="http://..."
-              type="url"
-              name="url"
-              maxlength="20"
-              onChange={(e) => setPostUrl(e.target.value)}
-            />
-            <ContentField
-              rows="4"
-              name="comment"
-              form="newPostForm"
-              placeholder="Awesome article about #javascript"
-              onChange={(e) => setPostText(e.target.value)}
-            ></ContentField>
-          </Form>
-          <SubmitPost>
-            <span>Publish</span>
-          </SubmitPost>
-        </RightBox>
-      </NewPost>
+      <Publish />
       <Post />
       <Post />
       <Post />
