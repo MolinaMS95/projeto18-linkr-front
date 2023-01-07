@@ -141,7 +141,7 @@ const SubmitPost = styled.button`
   float: right;
 `;
 const Title = styled.p`
-  padding: 20px;
+  padding: 30px 0px 30px 16px;
   font-family: "Oswald", sans-serif;
   font-size: 34px;
   font-weight: 700;
