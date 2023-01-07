@@ -51,70 +51,6 @@ const Container = styled.div`
   align-items: center;
   background: #333333;
 `;
-const NewPost = styled.div`
-  background-color: white;
-  max-width: 611px;
-  max-height: 209px;
-  width: 100%;
-  padding: 15px;
-  display: flex;
-  flex: row;
-  @media (min-width: 612px) {
-    border-radius: 10px;
-  }
-`;
-  
-const Field = styled.input`
-  padding: 5px;
-  font-size: 16px;
-  width: 100%;
-  height: 30px;
-  background-color: #efefef;
-  border: none;
-  border-radius: 5px;
-  color: black;
-  ::placeholder {
-    color: #949494;
-  }
-  margin-bottom: 8px;
-`;
-const ContentField = styled.textarea`
-  padding: 5px;
-  font-family: "Roboto", sans-serif;
-  font-size: 16px;
-  width: 100%;
-  background-color: #efefef;
-  border: none;
-  border-radius: 5px;
-  color: black;
-  resize: none;
-  ::placeholder {
-    color: #949494;
-  }
-`;
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: 5px 0 5px 0;
-`;
-const Prompt = styled.p`
-  color: #707070;
-  font-size: 20px;
-  margin-bottom: 8px;
-  text-align: center;
-  font-weight: 300;
-  @media (min-width: 612px) {
-    text-align: left;
-  }
-`;
-const SubmitPost = styled.button`
-  border: none;
-  background: #1877f2;
-  border-radius: 5px;
-  width: 112px;
-  height: 21px;
-  float: right;
-`;
 const Title = styled.p`
   padding: 30px 0px 30px 16px;
   font-family: "Oswald", sans-serif;
@@ -123,21 +59,4 @@ const Title = styled.p`
   align-self: center;
   width: 100%;
   max-width: 611px;
-`;
-const LeftBox = styled.div`
-  display: none;
-  @media (min-width: 612px) {
-    display: block;
-    border-radius: 10px;
-    height: 100%;
-    margin-right: 15px;
-  }
-`;
-const RightBox = styled.div`
-  width: 100%;
-`
-const UserImg = styled.img`
-  width: 46px;
-  height: 46px;
-  border-radius: 23px;
 `;

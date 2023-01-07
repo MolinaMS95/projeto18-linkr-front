@@ -44,7 +44,7 @@ export default function HashtagPage(props) {
       <ContentBox>
         <TimelineColumn>
           <Title>{hashtagName}</Title>
-          <Publish/>
+          {!params && <Publish/>}
           <Post />
           <Post />
           <Post />
