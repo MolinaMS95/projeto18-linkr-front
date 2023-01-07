@@ -1,6 +1,7 @@
 import { createContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import HashtagPage from "./pages/Hashtag";
 import { createGlobalStyle } from "styled-components";
 import "./constants/font.css";
 
@@ -16,6 +17,8 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<HomePage set={setUserData} />} />
+            <Route path="/hashtag" element={<HashtagPage/>} />
+            <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>
