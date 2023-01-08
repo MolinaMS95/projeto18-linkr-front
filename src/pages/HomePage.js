@@ -7,8 +7,7 @@ import "../constants/font.css";
 import Post from "../components/Post.js";
 
 export default function HomePage(props) {
-
-  const userData = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [postUrl, setPostUrl] = useState();
   const [postText, setPostText] = useState();
@@ -27,9 +26,7 @@ export default function HomePage(props) {
         console.log(data);
       });
   }, []);
-  function handleSubmitPost(){
-
-  }
+  function handleSubmitPost() {}
   return (
     <Container>
       <Title>timeline</Title>
@@ -88,7 +85,7 @@ const NewPost = styled.div`
     border-radius: 10px;
   }
 `;
-  
+
 const Field = styled.input`
   padding: 5px;
   font-size: 16px;
@@ -160,7 +157,7 @@ const LeftBox = styled.div`
 `;
 const RightBox = styled.div`
   width: 100%;
-`
+`;
 const UserImg = styled.img`
   width: 46px;
   height: 46px;
