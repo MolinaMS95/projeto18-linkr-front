@@ -5,11 +5,16 @@ import magnifier from '../constants/magnifier.svg';
 export default function Header() {
     return (
         <HeaderStyles>
-            <h1>linkr</h1>
-            <input type='text' placeholder='Search for people'/>
+            <section>
+                <h1>linkr</h1>
+                <input type='text' placeholder='Search for people'/>
+                <div>
+                    <img src={headerButton} alt=''/>
+                    <img src='https://static.displate.com/857x1200/displate/2021-04-09/b7b4d3e3a40c4dc0f212353ed79d997b_833c168276525a73bf78ff480e6a7578.jpg' alt='Profile picture'/>
+                </div>
+            </section>
             <div>
-                <img src={headerButton} alt=''/>
-                <img src='https://static.displate.com/857x1200/displate/2021-04-09/b7b4d3e3a40c4dc0f212353ed79d997b_833c168276525a73bf78ff480e6a7578.jpg' alt='Profile picture'/>
+                <input type='text' placeholder='Search for people'/>
             </div>
         </HeaderStyles>
     );
@@ -20,24 +25,42 @@ const HeaderStyles = styled.header`
     top: 0;
     z-index: 10;
     width: 100%;
-    height: 72px;
-    padding: 0 17px;
-    background-color: #151515;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     align-items: center;
 
-    h1 {
-        font-family: 'Passion One', cursive;
-        font-weight: 700;
-        font-size: 49px;
-        line-height: 54px;
-        letter-spacing: 0.05em;
-        color: #FFFFFF;
+    &>section {
+        width: 100%;
+        height: 72px;
+        padding: 0 17px;
+        background-color: #151515;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h1 {
+            font-family: 'Passion One', cursive;
+            font-weight: 700;
+            font-size: 49px;
+            line-height: 54px;
+            letter-spacing: 0.05em;
+            color: #FFFFFF;
+        }
+
+        div {
+            display: flex;
+            column-gap: 10px;
+
+            img:nth-of-type(2) {
+                width: 53px;
+                height: 53px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        }
     }
 
     input {
-        width: 563px;
         height: 45px;
         padding-left: 17px;
         padding-right: calc(21px + 2*17px);
@@ -64,31 +87,47 @@ const HeaderStyles = styled.header`
         }
     }
 
-    div {
-        display: flex;
-        column-gap: 10px;
+    section input {
+        width: 563px;
+    }
 
-        img:nth-of-type(2) {
-            width: 53px;
-            height: 53px;
-            border-radius: 50%;
-            object-fit: cover;
+    &>div {
+        width: 100%;
+        height: 65px;
+        background-color: #333333;
+        display: none;
+        justify-content: center;
+        align-items: center;
+
+        input {
+            width: calc(100% - 2*10px);
+            height: 45px;
         }
     }
 
     @media (max-width: 820px) {
-        input {
-            width: calc(100% - 2*17px - 109.76px - 86px - 2*9.62px);
+        section input {
+            width: calc(100% - 2*17px - 109.76px - 86px);
         }
 
-        @media (max-width: 375px) {
-            div {
-                column-gap: 5px;
+        @media (max-width: 425px) {
+            &>section {
+                div {
+                    column-gap: 5px;
+                }
+
+                input {
+                    display: none;
+                }
+
+                div img:nth-of-type(2) {
+                    width: 41px;
+                    height: 41px;
+                }
             }
 
-            div img:nth-of-type(2) {
-                width: 41px;
-                height: 41px;
+            &>div {
+                display: flex;
             }
         }
     }

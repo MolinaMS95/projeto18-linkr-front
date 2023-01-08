@@ -51,6 +51,10 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background: #333333;
+
+  @media (max-width: 425px) {
+    margin-top: calc(72px + 65px);
+  }
 `;
 const Title = styled.p`
   padding: 30px 0px 30px 16px;
