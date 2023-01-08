@@ -43,6 +43,7 @@ export default function HomePage(props) {
 }
 
 const Container = styled.div`
+  margin-top: 72px;
   width: 100vw;
   height: 100vh;
 
