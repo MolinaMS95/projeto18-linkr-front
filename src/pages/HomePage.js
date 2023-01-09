@@ -11,9 +11,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Swal from "sweetalert2";
 
 export default function HomePage(props) {
-//  const userData = useContext(UserContext);
-//  const navigate = useNavigate();
-const [posts, setPosts] = useState([]);
+  const {userData} = useContext(UserContext);
+  const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   useEffect(() => {
     getPosts();
@@ -25,7 +25,7 @@ const [posts, setPosts] = useState([]);
     axios
       .get(postsURL, {
         headers: {
-          Authorization: `Bearer 14b85cfe-b788-4f45-b58a-a6e4589b0f82`,
+          Authorization: `Bearer ${userData}`,
         },
       })
       .then((data) => {
