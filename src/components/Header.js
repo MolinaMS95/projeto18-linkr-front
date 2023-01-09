@@ -17,14 +17,14 @@ export default function Header() {
                 <div>
                     <input type='text' placeholder='Search for people'/>
                     <div>
-                        <div>
+                        {/* <div>
                             <img src='https://static-cse.canva.com/blob/759754/IMAGE1.jpg' alt=''></img>
                             <span>João Avatares</span>
                         </div>
                         <div>
                             <img src='http://s2.glbimg.com/h3Duok3KWVA8yaIOzZZIESkNLC4DKPsVVGWWhNMHhpNIoz-HdGixxa_8qOZvMp3w/e.glbimg.com/og/ed/f/original/2013/08/02/imagem_para_sexta_51.jpg' alt=''></img>
                             <span>João Amongus</span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div>
@@ -78,8 +78,6 @@ const HeaderStyles = styled.header`
             &>div {
                 position: absolute;
                 width: 563px;
-                height: 100px;
-                background-color: red;
 
                 div {
                     display: flex;
