@@ -1,13 +1,11 @@
 import styled from "styled-components";
 import { Link} from "react-router-dom";
 
-export default function HashtagList(hashtag){
+export default function HashtagList({hashtagList}){
 
-    const arrayTest = Object.values(hashtag);
-    
     return(
         <Container>
-            {arrayTest.map(language => (
+            {hashtagList.map(language => (
                 
                 <Link to={`/hashtag/${language}`}>
                     {language.length >0 &&<h1 key={language.id}># {language}</h1>}
