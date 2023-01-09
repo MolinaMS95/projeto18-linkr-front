@@ -8,6 +8,7 @@ import Post from "../components/Post.js";
 import TrendingSidebar from "../components/TrendingSidebar.js";
 import { useParams } from "react-router-dom";
 import Publish from "../components/Publish";
+import Header from "../components/Header";
 
 export default function HashtagPage(props) {
 
@@ -41,6 +42,7 @@ export default function HashtagPage(props) {
 
   return (
     <Container>
+      <Header/>
       <ContentBox>
         <TimelineColumn>
           <Title>{hashtagName}</Title>
