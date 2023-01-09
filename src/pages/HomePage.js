@@ -25,7 +25,7 @@ export default function HomePage(props) {
     axios
       .get(postsURL, {
         headers: {
-          Authorization: `Bearer 14b85cfe-b788-4f45-b58a-a6e4589b0f82`,
+          Authorization: `Bearer ${userData}`,
         },
       })
       .then((data) => {
