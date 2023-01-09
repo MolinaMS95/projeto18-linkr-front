@@ -6,9 +6,6 @@ export default function HashtagList(){
 
     const arrayTest = ["phyton", "c", "javascript", "c#", "c++", "react", "sql", "node", "material", "assembly"]
 
-    // const jwt = "temp"
-    // const hashtagList = pullHashtagList(jwt)
-
     return(
         <Container>
             {arrayTest.map(language => (
@@ -34,19 +31,3 @@ const Container = styled.div`
         font-weight: 700;
     }
 `
-
-// async function pullHashtagList(jwt){
-
-//     const hashtagList = axios.get(`http://localhost:3000/hashtag`, {
-//         headers: {
-//           Authorization: `Bearer ${jwt}`,
-//         },
-//     })
-//     return hashtagList;
-// }
-
-// const { jwt, setJwt } = useContext(AuthContext);
-
-// if (!jwt) {
-//     navigate("/");
-// }
