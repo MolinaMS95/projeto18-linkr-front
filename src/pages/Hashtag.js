@@ -56,9 +56,14 @@ export default function HashtagPage(props) {
 }
 
 const Container = styled.div`
+  margin-top: 72px;
   width: 100vw;
   height: 100vh;
   background: #333333;
+
+  @media (max-width: 425px) {
+    margin-top: calc(72px + 65px);
+  }
 `;
 
 const ContentBox = styled.div`
