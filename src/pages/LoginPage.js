@@ -35,7 +35,7 @@ export default function Login() {
       .then((response) => {
         setUserData(response.data);
         saveUser(response.data);
-        navigate("/hoje");
+        navigate("/");
       })
       .catch((error) => {
         Swal.fire({

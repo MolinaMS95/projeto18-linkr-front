@@ -26,7 +26,7 @@ export default function SignUp() {
     setDisabled(true);
     axios
       .post(signUpUrl, form)
-      .then(() => navigate("/"))
+      .then(() => navigate("/login"))
       .catch((error) => {
         Swal.fire({
           icon: "error",
