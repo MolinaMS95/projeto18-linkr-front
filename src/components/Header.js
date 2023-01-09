@@ -1,13 +1,49 @@
+import axios from 'axios';
+import { useContext, useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { UserContext } from '../App';
 import headerButton from '../constants/headerButton.svg';
 import magnifier from '../constants/magnifier.svg';
 
-export default function Header() {
-    const navigate = useNavigate();
 
-    function handleInput(e) {
-        console.log(e);
+export default function Header({refresh, setRefresh}) {
+    // const user = useContext(UserContext);
+    const navigate = useNavigate();
+    const [foundUsers, setFoundUsers] = useState([]);
+
+    const token = 'aaaaa';
+
+    function handleSearchBar(e) {
+        if (e.target.value.length < 3) return;
+
+        const config = {headers: {'Authorization': 'Bearer ' + token}};
+        const url = 'http://localhost:4000/search/' + e.target.value;
+
+        axios.get(url, config)
+            .then(({data}) => setFoundUsers(data))
+            .catch(() => navigate('/'));
+
+        setTimeout(() => {
+            e.target.value = '';
+            setFoundUsers([]);
+        }, 3000);
+    }
+
+    function navigateToUserPosts(id) {
+        navigate('/user/' + id);
+        setFoundUsers([]);
+        setRefresh(!refresh);
+    }
+
+    function Options({id, username, pictureurl}) {
+        return (
+            <div key={id}>
+                <img src={pictureurl} alt=''></img>
+                <span onClick={() => navigateToUserPosts(id)}>{username}</span>
+            </div>
+        );
     }
 
     return (
@@ -15,25 +51,31 @@ export default function Header() {
             <section>
                 <h1 onClick={() => navigate('/')}>linkr</h1>
                 <div>
-                    <input type='text' placeholder='Search for people'/>
+                    <DebounceInput
+                        placeholder='Search for people'
+                        minLength={3}
+                        debounceTimeout={300}
+                        onChange={handleSearchBar}
+                    />
                     <div>
-                        {/* <div>
-                            <img src='https://static-cse.canva.com/blob/759754/IMAGE1.jpg' alt=''></img>
-                            <span>João Avatares</span>
-                        </div>
-                        <div>
-                            <img src='http://s2.glbimg.com/h3Duok3KWVA8yaIOzZZIESkNLC4DKPsVVGWWhNMHhpNIoz-HdGixxa_8qOZvMp3w/e.glbimg.com/og/ed/f/original/2013/08/02/imagem_para_sexta_51.jpg' alt=''></img>
-                            <span>João Amongus</span>
-                        </div> */}
+                        {foundUsers.map(Options)}
                     </div>
                 </div>
                 <div>
                     <img src={headerButton} alt=''/>
-                    <img src='https://static.displate.com/857x1200/displate/2021-04-09/b7b4d3e3a40c4dc0f212353ed79d997b_833c168276525a73bf78ff480e6a7578.jpg' alt='Profile picture'/>
+                    <img src={'a'} alt='Profile picture'/>
                 </div>
             </section>
             <div>
-                <input type='text' placeholder='Search for people'/>
+                <DebounceInput
+                    placeholder='Search for people'
+                    minLength={3}
+                    debounceTimeout={300}
+                    onChange={handleSearchBar}
+                />
+                <div>
+                    {foundUsers.map(Options)}
+                </div>
             </div>
         </HeaderStyles>
     );
@@ -68,31 +110,53 @@ const HeaderStyles = styled.header`
 
         &>div:nth-of-type(1) {
             width: 563px;
-            border-radius: 8px;
-            background-color: #E7E7E7;
 
             input {
+                position: relative;
+                z-index: 1;
                 width: 100%;
             }
 
             &>div {
                 position: absolute;
+                top: calc(45px + 13.5px - 8px);
+                padding-left: 17px;
                 width: 563px;
+                border-bottom-left-radius: 8px;
+                border-bottom-right-radius: 8px;
+                background-color: #E7E7E7;
+                display: flex;
+                flex-direction: column;
+                row-gap: 16px;
 
                 div {
+                    height: 39px;
                     display: flex;
                     align-items: center;
+                    column-gap: 12px;
 
                     img {
-                        width: 40px;
-                        height: 40px;
+                        width: 39px;
+                        height: 39px;
                         border-radius: 50%;
                         object-fit: cover;
                     }
 
-                    /* span {
+                    span {
+                        font-family: 'Lato', sans-serif;
+                        font-weight: 400;
+                        font-size: 19px;
+                        line-height: 23px;
+                        color: #515151;
+                    }
+                }
 
-                    } */
+                div:first-of-type {
+                    margin-top: 22px;
+                }
+
+                div:last-of-type {
+                    margin-bottom: 22px;
                 }
             }
         }
@@ -110,6 +174,65 @@ const HeaderStyles = styled.header`
                 height: 53px;
                 border-radius: 50%;
                 object-fit: cover;
+            }
+        }
+    }
+
+    &>div {
+        width: 100%;
+        height: 65px;
+        background-color: #333333;
+        display: none;
+        justify-content: center;
+        align-items: center;
+
+        input {
+            position: relative;
+            z-index: 1;
+            width: calc(100% - 2*10px);
+        }
+
+        &>div {
+            position: absolute;
+            top: calc(72px + 10px + 45px - 8px);
+            padding-left: 17px;
+            width: calc(100% - 2*10px);
+            /* height: 100px; */
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            background-color: #E7E7E7;
+            display: flex;
+            flex-direction: column;
+            row-gap: 16px;
+
+            div {
+                height: 39px;
+                display: flex;
+                align-items: center;
+                column-gap: 12px;
+
+                img {
+                    width: 39px;
+                    height: 39px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                span {
+                    font-family: 'Lato', sans-serif;
+                    font-weight: 400;
+                    font-size: 19px;
+                    line-height: 23px;
+                    color: #515151;
+                }
+            }
+
+            div:first-of-type {
+                margin-top: 22px;
+            }
+
+            div:last-of-type {
+                margin-bottom: 22px;
             }
         }
     }
@@ -132,26 +255,12 @@ const HeaderStyles = styled.header`
         line-height: 23px;
         color: #515151;
 
-        ::placeholder {
+        &::placeholder {
             font-family: 'Lato', sans-serif;
             font-weight: 400;
             font-size: 19px;
             line-height: 23px;
             color: #C6C6C6;
-        }
-    }
-
-    &>div {
-        width: 100%;
-        height: 65px;
-        background-color: #333333;
-        display: none;
-        justify-content: center;
-        align-items: center;
-
-        input {
-            width: calc(100% - 2*10px);
-            height: 45px;
         }
     }
 

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { UserContext } from '../App.js';
 import heart from '../constants/heart.svg';
 
-export default function UserPostsPage() {
+export default function UserPostsPage({refresh}) {
     // const userData = useContext(UserContext);
     const navigate = useNavigate();
     const [user, setUser] = useState({});
@@ -15,15 +15,18 @@ export default function UserPostsPage() {
 
     const posts = (loaded) ? user.posts : [];
 
+    const token = 'aaaaa';
+
     function request() {
+        const config = {headers: {'Authorization': 'Bearer ' + token}};
         const url = 'http://localhost:4000/user/' + userid;
 
-        axios.get(url)
+        axios.get(url, config)
             .then(({data}) => setUser(data))
             .catch(() => navigate('/'));
     }
 
-    useEffect(request, []);
+    useEffect(request, [refresh]);
 
     function like(postid) {
         console.log(postid, userid);
