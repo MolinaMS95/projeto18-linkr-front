@@ -15,7 +15,7 @@ export default function Login() {
   const [disabled, setDisabled] = useState(false);
   const navigate = useNavigate();
   const { userData, setUserData } = useContext(UserContext);
-  const loginUrl = "";
+  const loginUrl = "https://linkr-api-kcil.onrender.com/signin";
 
   useEffect(() => {
     if (userData !== null) {

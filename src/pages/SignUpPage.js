@@ -15,7 +15,7 @@ export default function SignUp() {
   });
   const [disabled, setDisabled] = useState(false);
   const navigate = useNavigate();
-  const signUpUrl = "";
+  const signUpUrl = "https://linkr-api-kcil.onrender.com/signup";
 
   function handleForm(event) {
     setForm({ ...form, [event.target.name]: event.target.value });
