@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { UserContext } from "../App";
-import { useNavigate } from "react-router-dom";
+//import { UserContext } from "../App";
+//import { useNavigate } from "react-router-dom";
 import "../constants/font.css";
 import Post from "../components/Post.js";
 import Publish from "../components/Publish.js";
@@ -11,9 +11,9 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Swal from "sweetalert2";
 
 export default function HomePage(props) {
-  const { userData } = useContext(UserContext);
-  const [posts, setPosts] = useState([]);
+  const {userData} = useContext(UserContext);
   const navigate = useNavigate();
+  const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   useEffect(() => {
     getPosts();
@@ -68,13 +68,11 @@ const Container = styled.div`
   margin-top: 72px;
   width: 100vw;
   height: 100vh;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   background: #333333;
-
-  @media (max-width: 475px) {
+  @media (max-width: 425px) {
     margin-top: calc(72px + 65px);
   }
 `;

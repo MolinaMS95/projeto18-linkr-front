@@ -94,7 +94,7 @@ const NewPost = styled.div`
     border-radius: 10px;
   }
 `;
-  
+
 const Field = styled.input`
   padding: 5px;
   font-size: 16px;
