@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-//import { UserContext } from "../App";
-//import { useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 import "../constants/font.css";
 import Post from "../components/Post.js";
 import Publish from "../components/Publish.js";
