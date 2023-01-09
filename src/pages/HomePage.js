@@ -65,6 +65,7 @@ export default function HomePage(props) {
 }
 
 const Container = styled.div`
+  margin-top: 72px;
   width: 100vw;
   height: 100vh;
 
@@ -72,9 +73,13 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background: #333333;
+
+  @media (max-width: 425px) {
+    margin-top: calc(72px + 65px);
+  }
 `;
 const Title = styled.p`
-  padding: 20px;
+  padding: 30px 0px 30px 16px;
   font-family: "Oswald", sans-serif;
   font-size: 34px;
   font-weight: 700;

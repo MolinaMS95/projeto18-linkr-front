@@ -15,6 +15,10 @@ export default function HashtagPage(props) {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
 
+  const [postUrl, setPostUrl] = useState();
+  const [postText, setPostText] = useState();
+
+
   const getPostsUrl = "";
 
   const params = useParams().hashtag
@@ -54,9 +58,15 @@ export default function HashtagPage(props) {
 }
 
 const Container = styled.div`
+
+  margin-top: 72px;
   width: 100vw;
   height: 100vh;
   background: #333333;
+
+  @media (max-width: 425px) {
+    margin-top: calc(72px + 65px);
+  }
 `;
 
 const ContentBox = styled.div`
