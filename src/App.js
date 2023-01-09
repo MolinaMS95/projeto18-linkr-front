@@ -16,8 +16,8 @@ export default function App() {
     <>
       <GlobalStyle />
       <UserContext.Provider value={userData}>
-        <Header/>
         <BrowserRouter>
+          <Header/>
           <Routes>
             <Route path="/" element={<HomePage set={setUserData}/>} />
             <Route path="/hashtag" element={<HashtagPage/>} />

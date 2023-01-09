@@ -1,17 +1,16 @@
 import styled from "styled-components";
 import { Link} from "react-router-dom";
-import axios from 'axios';
 
-export default function HashtagList(){
+export default function HashtagList(hashtag){
 
-    const arrayTest = ["phyton", "c", "javascript", "c#", "c++", "react", "sql", "node", "material", "assembly"]
-
+    const arrayTest = Object.values(hashtag);
+    
     return(
         <Container>
             {arrayTest.map(language => (
                 
                 <Link to={`/hashtag/${language}`}>
-                    <h1 key={language.id}># {language}</h1>
+                    {language.length >0 &&<h1 key={language.id}># {language}</h1>}
                 </Link>
             ))   }
         </Container>

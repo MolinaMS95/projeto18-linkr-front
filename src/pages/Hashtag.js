@@ -1,55 +1,111 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import ClipLoader from "react-spinners/ClipLoader";
+import Swal from "sweetalert2";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import { postsURL } from "../constants/urls.js";
+import { hashtagURL } from "../constants/urls.js";
 import "../constants/font.css";
-import Post from "../components/Post.js";
 import TrendingSidebar from "../components/TrendingSidebar.js";
-import { useParams } from "react-router-dom";
-import Publish from "../components/Publish";
-import Header from "../components/Header";
+import Header from "../components/Header.js";
+import Post from "../components/Post.js";
+import Publish from "../components/Publish.js";
+
+
 
 export default function HashtagPage(props) {
 
-  const userData = useContext(UserContext);
-  const navigate = useNavigate();
+  // const userData = useContext(UserContext);
+  // const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
-  const [postUrl, setPostUrl] = useState();
-  const [postText, setPostText] = useState();
-
-  const getPostsUrl = "";
+  const [loadingPosts, setLoadingPosts] = useState(true);
 
   const params = useParams().hashtag
-  useEffect(() => {
-    console.log(`Bearer ${userData.token}`);
-    axios
-      .get(getPostsUrl, {
-        headers: { Authorization: `Bearer ${userData.token}` },
-      })
-      .then((data) => {
-        setPosts(data.data);
-      })
-      .catch((data) => {
-        console.log(data);
-      });
-  }, []);
-
   let hashtagName = "timeline"
   if (params) {
     hashtagName = params
   }
+  
+  useEffect(() => {
+    if (!params){
+      getPosts()
+    }else {
+      getHashtag(hashtagName)
+    }
+  }, []);
+
+  function getPosts() {
+    console.log("post");
+    setPosts([]);
+    setLoadingPosts(true);
+    axios
+      .get(postsURL, {
+        headers: {
+          Authorization: `Bearer 14b85cfe-b788-4f45-b58a-a6e4589b0f82`,
+        },
+      })
+      .then((data) => {
+        setPosts(data.data);
+        setLoadingPosts(false);
+      })
+      .catch((data) => {
+        Swal.fire(
+          "An error occured while trying to fetch the posts, please refresh the page"
+        );
+        console.log(data);
+      });
+  }
+
+  function getHashtag(hashtag) {
+    console.log("post");
+    setPosts([]);
+    setLoadingPosts(true);
+    axios
+      .get(hashtagURL, {
+        body: {hashtag},
+        headers: {
+          Authorization: `Bearer 14b85cfe-b788-4f45-b58a-a6e4589b0f82`,
+        },
+      })
+      .then((data) => {
+        setPosts(data.data);
+        setLoadingPosts(false);
+      })
+      .catch((data) => {
+        Swal.fire(
+          "An error occured while trying to fetch the posts, please refresh the page"
+        );
+        console.log(data);
+      });
+  }
 
   return (
     <Container>
-      <Header/>
+      <Header />
       <ContentBox>
         <TimelineColumn>
           <Title>{hashtagName}</Title>
-          {!params && <Publish/>}
-          <Post />
-          <Post />
-          <Post />
+          {!params && <Publish getPosts={getPosts} />}
+          {loadingPosts && (
+            <Padding>
+              <ClipLoader
+                color={"#FFFFFF"}
+                loading={loadingPosts}
+                size={150}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            </Padding>
+          )}
+          {!loadingPosts && posts.length === 0 && (
+            <Padding>There are no posts yet</Padding>
+          )}
+          {posts.map((data) => {
+            return <Post postData={data} />;
+          })}
         </TimelineColumn>
         <TrendingSidebar />
       </ContentBox>
@@ -58,12 +114,13 @@ export default function HashtagPage(props) {
 }
 
 const Container = styled.div`
+
   margin-top: 72px;
   width: 100vw;
   height: 100vh;
   background: #333333;
 
-  @media (max-width: 425px) {
+  @media (max-width: 475px) {
     margin-top: calc(72px + 65px);
   }
 `;
@@ -74,75 +131,11 @@ const ContentBox = styled.div`
 `
 
 const TimelineColumn = styled.div`
-    flex-direction: column;
-    align-items: center;
-    padding-right: 2%;
+      flex-direction: column;
+      align-items: center;
+      padding-right: 2%;
 `
 
-const NewPost = styled.div`
-  background-color: white;
-  max-width: 611px;
-  max-height: 209px;
-  width: 100%;
-  padding: 15px;
-  display: flex;
-  flex: row;
-  @media (min-width: 612px) {
-    border-radius: 10px;
-  }
-`;
-
-const Field = styled.input`
-  padding: 5px;
-  font-size: 16px;
-  width: 100%;
-  height: 30px;
-  background-color: #efefef;
-  border: none;
-  border-radius: 5px;
-  color: black;
-  ::placeholder {
-    color: #949494;
-  }
-  margin-bottom: 8px;
-`;
-const ContentField = styled.textarea`
-  padding: 5px;
-  font-family: "Roboto", sans-serif;
-  font-size: 16px;
-  width: 100%;
-  background-color: #efefef;
-  border: none;
-  border-radius: 5px;
-  color: black;
-  resize: none;
-  ::placeholder {
-    color: #949494;
-  }
-`;
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  margin: 5px 0 5px 0;
-`;
-const Prompt = styled.p`
-  color: #707070;
-  font-size: 20px;
-  margin-bottom: 8px;
-  text-align: center;
-  font-weight: 300;
-  @media (min-width: 612px) {
-    text-align: left;
-  }
-`;
-const SubmitPost = styled.button`
-  border: none;
-  background: #1877f2;
-  border-radius: 5px;
-  width: 112px;
-  height: 21px;
-  float: right;
-`;
 const Title = styled.p`
   padding: 60px 0px 8px 5px;
   font-family: "Oswald", sans-serif;
@@ -152,20 +145,7 @@ const Title = styled.p`
   width: 100%;
   max-width: 611px;
 `;
-const LeftBox = styled.div`
-  display: none;
-  @media (min-width: 612px) {
-    display: block;
-    border-radius: 10px;
-    height: 100%;
-    margin-right: 15px;
-  }
-`;
-const RightBox = styled.div`
-  width: 100%;
-`
-const UserImg = styled.img`
-  width: 46px;
-  height: 46px;
-  border-radius: 23px;
+
+const Padding = styled.div`
+  padding-top: 30px;
 `;

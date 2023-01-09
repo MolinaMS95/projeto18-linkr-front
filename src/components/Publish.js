@@ -1,19 +1,49 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { useContext, useState } from "react";
 import { UserContext } from "../App";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { postsURL } from "../constants/urls.js";
 import "../constants/font.css";
+import Swal from "sweetalert2";
 
-export default function Publish() {
-  const [posts, setPosts] = useState([]);
+export default function Publish(props) {
+  //const userData = useContext(props.userData);
   const [postUrl, setPostUrl] = useState();
   const [postText, setPostText] = useState();
-
-  function handleSubmitPost() {
-
+  const [loading, setLoading] = useState(false);
+  function handleSubmitPost(event) {
+    event.preventDefault();
+    if (postUrl.length === 0 || loading) {
+      return;
+    }
+    setLoading(true);
+    const postInfo = {
+      url: postUrl,
+      content: postText,
+      userId: 1,
+    };
+    axios
+      .post(postsURL, postInfo, {
+        headers: {
+          Authorization: `Bearer 14b85cfe-b788-4f45-b58a-a6e4589b0f82`,
+        },
+      })
+      .then(success)
+      .catch(failure);
   }
+  function success() {
+    setLoading(false);
+    setPostUrl("");
+    setPostText("");
 
+    props.getPosts();
+    console.log("oi");
+  }
+  function failure(data) {
+    console.log(data);
+    setLoading(false);
+    Swal.fire("Houve um erro ao publicar seu link.");
+  }
   return (
     <NewPost>
       <LeftBox>
@@ -21,28 +51,34 @@ export default function Publish() {
       </LeftBox>
       <RightBox>
         <Prompt>What are you going to share today?</Prompt>
-        <Form onSubmit={handleSubmitPost} id="newPostForm">
+        <Form id="newPostForm">
           <Field
+            disabled={loading}
             placeholder="http://..."
             type="url"
             name="url"
             maxlength="20"
+            value={postUrl}
             onChange={(e) => setPostUrl(e.target.value)}
+            required
           />
           <ContentField
+            disabled={loading}
             rows="4"
             name="comment"
             form="newPostForm"
             placeholder="Awesome article about #javascript"
+            value={postText}
             onChange={(e) => setPostText(e.target.value)}
           ></ContentField>
         </Form>
-        <SubmitPost>
-          <span>Publish</span>
+        <SubmitPost onClick={handleSubmitPost}>
+          {loading && <span>Publishing...</span>}
+          {!loading && <span>Publish</span>}
         </SubmitPost>
       </RightBox>
     </NewPost>
-  )
+  );
 }
 
 const NewPost = styled.div`
