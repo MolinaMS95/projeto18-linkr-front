@@ -11,18 +11,19 @@ export const UserContext = createContext();
 
 export default function App() {
   const [userData, setUserData] = useState(0);
+  const [refresh, setRefresh] = useState(false);
  
   return (
     <>
       <GlobalStyle />
       <UserContext.Provider value={userData}>
         <BrowserRouter>
-          <Header/>
+          <Header refresh={refresh} setRefresh={setRefresh}/>
           <Routes>
             <Route path="/" element={<HomePage set={setUserData}/>} />
             <Route path="/hashtag" element={<HashtagPage/>} />
             <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
-            <Route path='/user/:id' element={<UserPostsPage/>}/>
+            <Route path='/user/:id' element={<UserPostsPage refresh={refresh}/>}/>
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>
