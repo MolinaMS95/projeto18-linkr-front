@@ -1,12 +1,15 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import headerButton from '../constants/headerButton.svg';
 import magnifier from '../constants/magnifier.svg';
 
 export default function Header() {
+    const navigate = useNavigate();
+
     return (
         <HeaderStyles>
             <section>
-                <h1>linkr</h1>
+                <h1 onClick={() => navigate('/')}>linkr</h1>
                 <input type='text' placeholder='Search for people'/>
                 <div>
                     <img src={headerButton} alt=''/>
@@ -50,6 +53,10 @@ const HeaderStyles = styled.header`
         div {
             display: flex;
             column-gap: 10px;
+
+            img:nth-of-type(1) {
+                width: 20px;
+            }
 
             img:nth-of-type(2) {
                 width: 53px;
@@ -109,26 +116,26 @@ const HeaderStyles = styled.header`
         section input {
             width: calc(100% - 2*17px - 109.76px - 86px);
         }
+    }
 
-        @media (max-width: 425px) {
-            &>section {
-                div {
-                    column-gap: 5px;
-                }
-
-                input {
-                    display: none;
-                }
-
-                div img:nth-of-type(2) {
-                    width: 41px;
-                    height: 41px;
-                }
+    @media (max-width: 475px) {
+        &>section {
+            div {
+                column-gap: 5px;
             }
 
-            &>div {
-                display: flex;
+            input {
+                display: none;
             }
+
+            div img:nth-of-type(2) {
+                width: 41px;
+                height: 41px;
+            }
+        }
+
+        &>div {
+            display: flex;
         }
     }
 `;
