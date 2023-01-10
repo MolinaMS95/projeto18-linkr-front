@@ -64,10 +64,10 @@ export default function Header() {
                         {foundUsers.map(Options)}
                     </div>
                 </div>
-                <div>
+                <Modal>
                     <AiOutlineDown/>
-                    <img src={'a'} alt='Profile picture'/>
-                </div>
+                    <img src='' alt='Profile picture'/>
+                </Modal>
             </section>
             <div>
                 <DebounceInput
@@ -161,23 +161,6 @@ const HeaderStyles = styled.header`
                 div:last-of-type {
                     margin-bottom: 22px;
                 }
-            }
-        }
-
-        &>div:nth-of-type(2) {
-            display: flex;
-            align-items: center;
-            column-gap: 10px;
-
-            svg {
-                font-size: 20px;
-            }
-
-            img {
-                width: 53px;
-                height: 53px;
-                border-radius: 50%;
-                object-fit: cover;
             }
         }
     }
@@ -284,23 +267,40 @@ const HeaderStyles = styled.header`
             &>div:nth-of-type(1) {
                 display: none;
             }
-
-            &>div:nth-of-type(2) {
-                column-gap: 5px;
-
-                svg {
-                    width: 16px;
-                }
-
-                img {
-                    width: 41px;
-                    height: 41px;
-                }
-            }
         }
 
         &>div {
             display: flex;
+        }
+    }
+`;
+
+const Modal = styled.div`
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+
+    svg {
+        font-size: 20px;
+    }
+
+    img {
+        width: 53px;
+        height: 53px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    @media (max-width: 475px) {
+        column-gap: 5px;
+
+        svg {
+            width: 16px;
+        }
+
+        img {
+            width: 41px;
+            height: 41px;
         }
     }
 `;
