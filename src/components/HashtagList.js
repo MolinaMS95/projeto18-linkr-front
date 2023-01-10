@@ -1,20 +1,14 @@
 import styled from "styled-components";
 import { Link} from "react-router-dom";
-import axios from 'axios';
 
-export default function HashtagList(){
-
-    const arrayTest = ["phyton", "c", "javascript", "c#", "c++", "react", "sql", "node", "material", "assembly"]
-
-    // const jwt = "temp"
-    // const hashtagList = pullHashtagList(jwt)
+export default function HashtagList({hashtagList}){
 
     return(
         <Container>
-            {arrayTest.map(language => (
+            {hashtagList.map(language => (
                 
                 <Link to={`/hashtag/${language}`}>
-                    <h1 key={language.id}># {language}</h1>
+                    {language.length >0 &&<h1 key={language.id}># {language}</h1>}
                 </Link>
             ))   }
         </Container>
@@ -34,19 +28,3 @@ const Container = styled.div`
         font-weight: 700;
     }
 `
-
-// async function pullHashtagList(jwt){
-
-//     const hashtagList = axios.get(`http://localhost:3000/hashtag`, {
-//         headers: {
-//           Authorization: `Bearer ${jwt}`,
-//         },
-//     })
-//     return hashtagList;
-// }
-
-// const { jwt, setJwt } = useContext(AuthContext);
-
-// if (!jwt) {
-//     navigate("/");
-// }

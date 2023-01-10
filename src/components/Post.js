@@ -14,29 +14,22 @@ export default function Post(props) {
   return (
     <Container>
       <LeftBox>
-        <UserImg src="https://static.displate.com/857x1200/displate/2021-04-09/b7b4d3e3a40c4dc0f212353ed79d997b_833c168276525a73bf78ff480e6a7578.jpg"></UserImg>
+        <UserImg src={postData.userimage}></UserImg>
         <Likes>
           <ion-icon name="heart-outline"></ion-icon>
           <p>13 likes</p>
         </Likes>
       </LeftBox>
       <RightBox>
-        <UserName>Juvenal Juvêncio</UserName>
-        <Content>
-          Muito maneiro esse tutorial de Material UI com React, deem uma olhada!
-          #react #material
-        </Content>
-        <UrlDisplay>
+        <UserName>{postData.username}</UserName>
+        <Content>{postData.content}</Content>
+        <UrlDisplay href={postData.url} target="_blank">
           <UrlContent>
-            <UrlTitle>Como aplicar o Material UI em um projeto React</UrlTitle>
-            <UrlText>
-              Hey! I have moved this tutorial to my personal blog. Same content,
-              new location. Sorry about making you click through to another
-              page. aaaaaa aa aaaaaa a  aaaaaa  aaa a a  aaaaaaaa  a    aaaaaaaaaaaaaa
-            </UrlText>
-            <Url>https://medium.com/@pshrmn/a-simple-react-router</Url>
+            <UrlTitle>{postData.urltitle}</UrlTitle>
+            <UrlText>{postData.urldescription}</UrlText>
+            <Url>{postData.url}</Url>
           </UrlContent>
-          <UrlImage src="https://pbs.twimg.com/profile_images/446356636710363136/OYIaJ1KK_400x400.png" />
+          <UrlImage src={postData.urlimage} />
         </UrlDisplay>
       </RightBox>
     </Container>
@@ -64,26 +57,26 @@ const LeftBox = styled.div`
   justify-content: flex-start;
   align-items: center;
   width: 50px;
-`
+`;
 const UserImg = styled.img`
   width: 46px;
   height: 46px;
   border-radius: 23px;
-`
+`;
 
 const Likes = styled.div`
   margin-top: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  ion-icon{
+  ion-icon {
     font-size: 20px;
-    margin:10px;
+    margin: 10px;
   }
-  p{
+  p {
     font-size: 9px;
   }
-`
+`;
 const RightBox = styled.div`
   width: 100%;
   height: 100%;
@@ -91,22 +84,23 @@ const RightBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`
+`;
 const UserName = styled.p`
   font-size: 17px;
   height: 20px;
-`
+`;
 const Content = styled.p`
   font-size: 15px;
   height: 52px;
   width: 100%;
   color: #b7b7b7;
 `;
-const UrlDisplay = styled.div`
+const UrlDisplay = styled.a`
   height: 115px;
   width: 100%;
   display: flex;
   flex-direction: row;
+  cursor: pointer;
 `;
 const UrlContent = styled.div`
   border-bottom-left-radius: 10px;

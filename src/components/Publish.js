@@ -1,48 +1,84 @@
 import styled from "styled-components";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
+import { useContext, useState } from "react";
 import { UserContext } from "../App";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { postsURL } from "../constants/urls.js";
 import "../constants/font.css";
+import Swal from "sweetalert2";
 
-export default function Publish() {
-    const [posts, setPosts] = useState([]);
-    const [postUrl, setPostUrl] = useState();
-    const [postText, setPostText] = useState();
-  
-    function handleSubmitPost() {
-  
+export default function Publish(props) {
+  //const userData = useContext(props.userData);
+  const [postUrl, setPostUrl] = useState();
+  const [postText, setPostText] = useState();
+  const [loading, setLoading] = useState(false);
+  function handleSubmitPost(event) {
+    event.preventDefault();
+    if (postUrl.length === 0 || loading) {
+      return;
     }
-  
-    return (
-        <NewPost>
-            <LeftBox>
-                <UserImg src="https://static.displate.com/857x1200/displate/2021-04-09/b7b4d3e3a40c4dc0f212353ed79d997b_833c168276525a73bf78ff480e6a7578.jpg"></UserImg>
-            </LeftBox>
-            <RightBox>
-                <Prompt>What are you going to share today?</Prompt>
-                <Form onSubmit={handleSubmitPost} id="newPostForm">
-                    <Field
-                        placeholder="http://..."
-                        type="url"
-                        name="url"
-                        maxlength="20"
-                        onChange={(e) => setPostUrl(e.target.value)}
-                    />
-                    <ContentField
-                        rows="4"
-                        name="comment"
-                        form="newPostForm"
-                        placeholder="Awesome article about #javascript"
-                        onChange={(e) => setPostText(e.target.value)}
-                    ></ContentField>
-                </Form>
-                <SubmitPost>
-                    <span>Publish</span>
-                </SubmitPost>
-            </RightBox>
-        </NewPost>
-    )
+    setLoading(true);
+    const postInfo = {
+      url: postUrl,
+      content: postText,
+      userId: 1,
+    };
+    axios
+      .post(postsURL, postInfo, {
+        headers: {
+          Authorization: `Bearer 14b85cfe-b788-4f45-b58a-a6e4589b0f82`,
+        },
+      })
+      .then(success)
+      .catch(failure);
+  }
+  function success() {
+    setLoading(false);
+    setPostUrl("");
+    setPostText("");
+
+    props.getPosts();
+    console.log("oi");
+  }
+  function failure(data) {
+    console.log(data);
+    setLoading(false);
+    Swal.fire("Houve um erro ao publicar seu link.");
+  }
+  return (
+    <NewPost>
+      <LeftBox>
+        <UserImg src="https://static.displate.com/857x1200/displate/2021-04-09/b7b4d3e3a40c4dc0f212353ed79d997b_833c168276525a73bf78ff480e6a7578.jpg"></UserImg>
+      </LeftBox>
+      <RightBox>
+        <Prompt>What are you going to share today?</Prompt>
+        <Form id="newPostForm">
+          <Field
+            disabled={loading}
+            placeholder="http://..."
+            type="url"
+            name="url"
+            maxlength="20"
+            value={postUrl}
+            onChange={(e) => setPostUrl(e.target.value)}
+            required
+          />
+          <ContentField
+            disabled={loading}
+            rows="4"
+            name="comment"
+            form="newPostForm"
+            placeholder="Awesome article about #javascript"
+            value={postText}
+            onChange={(e) => setPostText(e.target.value)}
+          ></ContentField>
+        </Form>
+        <SubmitPost onClick={handleSubmitPost}>
+          {loading && <span>Publishing...</span>}
+          {!loading && <span>Publish</span>}
+        </SubmitPost>
+      </RightBox>
+    </NewPost>
+  );
 }
 
 const NewPost = styled.div`
@@ -58,7 +94,7 @@ const NewPost = styled.div`
     border-radius: 10px;
   }
 `;
-  
+
 const Field = styled.input`
   padding: 5px;
   font-size: 16px;
