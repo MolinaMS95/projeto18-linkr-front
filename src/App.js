@@ -8,24 +8,26 @@ import Header from './components/Header.js';
 import UserPostsPage from './pages/UserPostsPage.js';
 
 export const UserContext = createContext();
+export const refreshContext = createContext();
 
 export default function App() {
   const [userData, setUserData] = useState(0);
-  const [refresh, setRefresh] = useState(false);
+  const refreshState = useState(false);
  
   return (
     <>
       <GlobalStyle />
       <UserContext.Provider value={userData}>
+      <refreshContext.Provider value={refreshState}>
         <BrowserRouter>
-          <Header refresh={refresh} setRefresh={setRefresh}/>
           <Routes>
             <Route path="/" element={<HomePage set={setUserData}/>} />
             <Route path="/hashtag" element={<HashtagPage/>} />
             <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
-            <Route path='/user/:id' element={<UserPostsPage refresh={refresh}/>}/>
+            <Route path='/user/:id' element={<UserPostsPage refresh={refreshState[0]}/>}/>
           </Routes>
         </BrowserRouter>
+      </refreshContext.Provider>
       </UserContext.Provider>
     </>
   );

@@ -3,15 +3,18 @@ import { useContext, useState } from 'react';
 import { DebounceInput } from 'react-debounce-input';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { UserContext } from '../App';
-import headerButton from '../constants/headerButton.svg';
+import { refreshContext, UserContext } from '../App';
 import magnifier from '../constants/magnifier.svg';
+import { AiOutlineDown } from 'react-icons/ai';
 
-
-export default function Header({refresh, setRefresh}) {
+export default function Header() {
     // const user = useContext(UserContext);
+    const [refresh, setRefresh] = useContext(refreshContext);
     const navigate = useNavigate();
     const [foundUsers, setFoundUsers] = useState([]);
+
+    const localhost = 'http://localhost:4000';
+    const API_URL = 'https://linkr-api-kcil.onrender.com';
 
     const token = 'aaaaa';
 
@@ -19,14 +22,13 @@ export default function Header({refresh, setRefresh}) {
         if (e.target.value.length < 3) return;
 
         const config = {headers: {'Authorization': 'Bearer ' + token}};
-        const url = 'http://localhost:4000/search/' + e.target.value;
+        const url = API_URL + '/search/' + e.target.value;
 
         axios.get(url, config)
             .then(({data}) => setFoundUsers(data))
             .catch(() => navigate('/'));
 
         setTimeout(() => {
-            e.target.value = '';
             setFoundUsers([]);
         }, 3000);
     }
@@ -49,7 +51,7 @@ export default function Header({refresh, setRefresh}) {
     return (
         <HeaderStyles>
             <section>
-                <h1 onClick={() => navigate('/')}>linkr</h1>
+                <h1>linkr</h1>
                 <div>
                     <DebounceInput
                         placeholder='Search for people'
@@ -62,7 +64,7 @@ export default function Header({refresh, setRefresh}) {
                     </div>
                 </div>
                 <div>
-                    <img src={headerButton} alt=''/>
+                    <AiOutlineDown/>
                     <img src={'a'} alt='Profile picture'/>
                 </div>
             </section>
@@ -163,13 +165,14 @@ const HeaderStyles = styled.header`
 
         &>div:nth-of-type(2) {
             display: flex;
+            align-items: center;
             column-gap: 10px;
 
-            img:nth-of-type(1) {
-                width: 20px;
+            svg {
+                font-size: 20px;
             }
 
-            img:nth-of-type(2) {
+            img {
                 width: 53px;
                 height: 53px;
                 border-radius: 50%;
@@ -197,7 +200,6 @@ const HeaderStyles = styled.header`
             top: calc(72px + 10px + 45px - 8px);
             padding-left: 17px;
             width: calc(100% - 2*10px);
-            /* height: 100px; */
             border-bottom-left-radius: 8px;
             border-bottom-right-radius: 8px;
             background-color: #E7E7E7;
@@ -285,11 +287,11 @@ const HeaderStyles = styled.header`
             &>div:nth-of-type(2) {
                 column-gap: 5px;
 
-                img:nth-of-type(1) {
+                svg {
                     width: 16px;
                 }
 
-                img:nth-of-type(2) {
+                img {
                     width: 41px;
                     height: 41px;
                 }

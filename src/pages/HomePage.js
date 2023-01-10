@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "../constants/font.css";
 import Post from "../components/Post.js";
 import Publish from "../components/Publish.js";
+import Header from "../components/Header";
 
 export default function HomePage(props) {
 
@@ -33,6 +34,7 @@ export default function HomePage(props) {
   }
   return (
     <Container>
+      <Header/>
       <Title>timeline</Title>
       <Publish />
       <Post />
