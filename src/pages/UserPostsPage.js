@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { UserContext } from '../App.js';
 import { AiOutlineHeart } from "react-icons/ai";
 import Header from '../components/Header.js';
+import { hashtagURL, userPostsURL } from '../constants/urls.js';
 
 export default function UserPostsPage({refresh}) {
     // const {userData} = useContext(UserContext);
@@ -12,18 +13,15 @@ export default function UserPostsPage({refresh}) {
     const [user, setUser] = useState({});
     const {id: userid} = useParams();
 
-    const localhost = 'http://localhost:4000';
-    const API_URL = 'https://linkr-api-kcil.onrender.com';
-
     const loaded = (Object.keys(user).length !== 0);
 
     const posts = (loaded) ? user.posts : [];
 
     const token = 'aaaaa';
+    const config = {headers: {'Authorization': 'Bearer ' + token}};
 
     function request() {
-        const config = {headers: {'Authorization': 'Bearer ' + token}};
-        const url = API_URL + '/user/' + userid;
+        const url = userPostsURL + userid;
 
         axios.get(url, config)
             .then(({data}) => setUser(data))
@@ -48,8 +46,12 @@ export default function UserPostsPage({refresh}) {
             );
         }
 
+        function navigateWithLink() {
+            window.open(url, '_blank');
+        }
+
         return (
-            <div key={postid}>
+            <div key={postid} onClick={navigateWithLink}>
                 <aside>
                     <img src={user.pictureurl} alt='Profile picture'/>
                     <div>
@@ -103,13 +105,16 @@ export default function UserPostsPage({refresh}) {
                 </div>
                 {posts.map(Post)}
             </section>
-            <aside>
-                <span>trending</span>
-                <hr/>
-                <section>
-                    {hashtagsArray.map(Hashtag)}
-                </section>
-            </aside>
+            <div>
+                <button>Follow</button>
+                <aside>
+                    <span>trending</span>
+                    <hr/>
+                    <section>
+                        {hashtagsArray.map(Hashtag)}
+                    </section>
+                </aside>
+            </div>
         </UserPostsPageStyles>
     );
 }
@@ -263,51 +268,72 @@ const UserPostsPageStyles = styled.main`
         }
     }
 
-    &>aside {
-        margin-top: calc(64px + 41px);
-        padding-top: 9px;
-        padding-bottom: 30px;
-        width: 301px;
-        height: 100%;
-        border-radius: 16px;
-        background-color: #171717;
+    &>div {
+        margin-top: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        row-gap: 60px;
 
-        &>span {
-            margin-left: 16px;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 700;
-            font-size: 27px;
-            line-height: 40px;
-            color: #FFFFFF;
-        }
-
-        hr {
-            margin-top: 12px;
-            margin-bottom: 22px;
-            height: 1px;
+        button {
+            width: 112px;
+            height: 31px;
             border: none;
-            background-color: #484848;
+            border-radius: 5px;
+            background: #1877F2;
+            font-family: 'Lato', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            line-height: 17px;
+            color: #FFFFFF;
+            flex-shrink: 0;
         }
 
-        section {
-            padding-left: 16px;
-            display: flex;
-            flex-direction: column;
-            row-gap: 10px;
+        aside {
+            padding-top: 9px;
+            padding-bottom: 30px;
+            width: 301px;
+            height: 100%;
+            border-radius: 16px;
+            background-color: #171717;
 
-            span {
-                font-family: 'Lato', sans-serif;
+            &>span {
+                margin-left: 16px;
+                font-family: 'Oswald', sans-serif;
                 font-weight: 700;
-                font-size: 19px;
-                line-height: 23px;
-                letter-spacing: 0.05em;
+                font-size: 27px;
+                line-height: 40px;
                 color: #FFFFFF;
             }
+
+            hr {
+                margin-top: 12px;
+                margin-bottom: 22px;
+                height: 1px;
+                border: none;
+                background-color: #484848;
+            }
+
+            section {
+                padding-left: 16px;
+                display: flex;
+                flex-direction: column;
+                row-gap: 10px;
+
+                span {
+                    font-family: 'Lato', sans-serif;
+                    font-weight: 700;
+                    font-size: 19px;
+                    line-height: 23px;
+                    letter-spacing: 0.05em;
+                    color: #FFFFFF;
+                }
+            }
         }
-    }
+    } 
 
     @media (max-width: 1000px) {
-        &>aside {
+        &>div {
             display: none;
         }
     }

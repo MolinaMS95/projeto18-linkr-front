@@ -6,7 +6,6 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import { createGlobalStyle } from "styled-components";
 import "./constants/font.css";
-import Header from './components/Header.js';
 import UserPostsPage from './pages/UserPostsPage.js';
 
 export const UserContext = createContext();

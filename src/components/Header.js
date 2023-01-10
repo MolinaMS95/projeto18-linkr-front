@@ -6,9 +6,10 @@ import styled from 'styled-components';
 import { refreshContext, UserContext } from '../App';
 import magnifier from '../constants/magnifier.svg';
 import { AiOutlineDown } from 'react-icons/ai';
+import { searchURL } from '../constants/urls';
 
 export default function Header() {
-    // const user = useContext(UserContext);
+    // const {userData} = useContext(UserContext);
     const [refresh, setRefresh] = useContext(refreshContext);
     const navigate = useNavigate();
     const [foundUsers, setFoundUsers] = useState([]);
@@ -22,7 +23,7 @@ export default function Header() {
         if (e.target.value.length < 3) return;
 
         const config = {headers: {'Authorization': 'Bearer ' + token}};
-        const url = API_URL + '/search/' + e.target.value;
+        const url = searchURL + e.target.value;
 
         axios.get(url, config)
             .then(({data}) => setFoundUsers(data))
@@ -51,7 +52,7 @@ export default function Header() {
     return (
         <HeaderStyles>
             <section>
-                <h1>linkr</h1>
+                <h1 onClick={() => navigate('/')}>linkr</h1>
                 <div>
                     <DebounceInput
                         placeholder='Search for people'
