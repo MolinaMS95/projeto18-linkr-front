@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "../constants/font.css";
 import Post from "../components/Post.js";
 import Publish from "../components/Publish.js";
+import Header from "../components/Header";
 import { postsURL } from "../constants/urls.js";
 import ClipLoader from "react-spinners/ClipLoader";
 import Swal from "sweetalert2";
@@ -41,6 +42,7 @@ export default function HomePage(props) {
   }
   return (
     <Container>
+      <Header/>
       <Title>timeline</Title>
       <Publish getPosts={getPosts} />
       {loadingPosts && (

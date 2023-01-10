@@ -10,27 +10,29 @@ import Header from './components/Header.js';
 import UserPostsPage from './pages/UserPostsPage.js';
 
 export const UserContext = createContext();
+export const refreshContext = createContext();
 
 export default function App() {
   const localUser = JSON.parse(localStorage.getItem("user"));
   const [userData, setUserData] = useState(localUser);
-  const [refresh, setRefresh] = useState(false);
+  const refreshState = useState(false);
  
   return (
     <>
       <GlobalStyle />
       <UserContext.Provider value={{userData, setUserData}}>
+      <refreshContext.Provider value={refreshState}>
         <BrowserRouter>
-          <Header refresh={refresh} setRefresh={setRefresh}/>
           <Routes>
             <Route path="/" element={<HomePage set={setUserData}/>} />
             <Route path="/hashtag" element={<HashtagPage/>} />
             <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
+            <Route path='/user/:id' element={<UserPostsPage refresh={refreshState[0]}/>}/>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/cadastro" element={<SignUpPage />} />
-            <Route path='/user/:id' element={<UserPostsPage refresh={refresh}/>}/>
           </Routes>
         </BrowserRouter>
+      </refreshContext.Provider>
       </UserContext.Provider>
     </>
   );

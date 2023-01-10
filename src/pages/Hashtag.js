@@ -14,8 +14,6 @@ import Header from "../components/Header.js";
 import Post from "../components/Post.js";
 import Publish from "../components/Publish.js";
 
-
-
 export default function HashtagPage(props) {
 
   // const userData = useContext(UserContext);
