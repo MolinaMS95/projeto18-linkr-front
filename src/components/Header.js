@@ -1,28 +1,41 @@
-import axios from 'axios';
-import { useContext, useState } from 'react';
-import { DebounceInput } from 'react-debounce-input';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { refreshContext, UserContext } from '../App';
-import magnifier from '../constants/magnifier.svg';
-import { AiOutlineDown } from 'react-icons/ai';
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
 import { DebounceInput } from "react-debounce-input";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { UserContext } from "../App";
-import headerButton from "../constants/headerButton.svg";
-import menuButton from "../constants/menuButton.svg";
+import { refreshContext, UserContext } from "../App";
 import magnifier from "../constants/magnifier.svg";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
+import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
 export default function Header() {
-    const {refresh, setRefresh} = useContext(refreshContext);
-    const navigate = useNavigate();
-    const [foundUsers, setFoundUsers] = useState([]);
+  const { refresh, setRefresh } = useContext(refreshContext);
+  const navigate = useNavigate();
+  const [foundUsers, setFoundUsers] = useState([]);
   const { userData, setUserData } = useContext(UserContext);
   const [showMenu, setShowMenu] = useState(false);
+  const userURL = `https://linkr-api-kcil.onrender.com/user`;
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(userURL, {
+        headers: {
+          Authorization: `Bearer ${userData}`,
+        },
+      })
+      .then((response) => {
+        setUser(response.data);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+          footer: `Error status ${error.response.status}`,
+        });
+      });
+  }, []);
 
   function logout(token) {
     axios
@@ -55,10 +68,10 @@ export default function Header() {
       .then(({ data }) => setFoundUsers(data))
       .catch(() => navigate("/"));
 
-        setTimeout(() => {
-            setFoundUsers([]);
-        }, 3000);
-    }
+    setTimeout(() => {
+      setFoundUsers([]);
+    }, 3000);
+  }
 
   function navigateToUserPosts(id) {
     navigate("/user/" + id);
@@ -75,44 +88,40 @@ export default function Header() {
     );
   }
 
-    return (
-        <HeaderStyles>
-            <section>
-                <h1>linkr</h1>
-                <div>
-                    <DebounceInput
-                        placeholder='Search for people'
-                        minLength={3}
-                        debounceTimeout={300}
-                        onChange={handleSearchBar}
-                    />
-                    <div>
-                        {foundUsers.map(Options)}
-                    </div>
-                </div>
-                <div onClick={() => setShowMenu(!showMenu)}>
-                    <AiOutlineDown/>
-                    <img src={'a'} alt='Profile picture'/>
-                </div>
-                {showMenu && (
+  return (
+    <HeaderStyles>
+      <section>
+        <h1>linkr</h1>
+        <div>
+          <DebounceInput
+            placeholder="Search for people"
+            minLength={3}
+            debounceTimeout={300}
+            onChange={handleSearchBar}
+          />
+          <div>{foundUsers.map(Options)}</div>
+        </div>
+        <div onClick={() => setShowMenu(!showMenu)}>
+          {!showMenu ? <AiOutlineDown /> : <AiOutlineUp/>}
+          <img src={user === null ? "" : user.pictureurl} alt="foto do usuário" />
+        </div>
+        {showMenu && (
           <LogoutMenu>
             <p onClick={() => logout(userData)}>Logout</p>
           </LogoutMenu>
         )}
-            </section>
-            <div>
-                <DebounceInput
-                    placeholder='Search for people'
-                    minLength={3}
-                    debounceTimeout={300}
-                    onChange={handleSearchBar}
-                />
-                <div>
-                    {foundUsers.map(Options)}
-                </div>
-            </div>
-        </HeaderStyles>
-    );
+      </section>
+      <div>
+        <DebounceInput
+          placeholder="Search for people"
+          minLength={3}
+          debounceTimeout={300}
+          onChange={handleSearchBar}
+        />
+        <div>{foundUsers.map(Options)}</div>
+      </div>
+    </HeaderStyles>
+  );
 }
 
 const LogoutMenu = styled.div`
@@ -217,23 +226,23 @@ const HeaderStyles = styled.header`
       }
     }
 
-        &>div:nth-of-type(2) {
-            display: flex;
-            align-items: center;
-            column-gap: 10px;
+    & > div:nth-of-type(2) {
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
 
-            svg {
-                font-size: 20px;
-            }
+      svg {
+        font-size: 20px;
+      }
 
-            img {
-                width: 53px;
-                height: 53px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-        }
+      img {
+        width: 53px;
+        height: 53px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
     }
+  }
 
   & > div {
     width: 100%;
@@ -249,17 +258,17 @@ const HeaderStyles = styled.header`
       width: calc(100% - 2 * 10px);
     }
 
-        &>div {
-            position: absolute;
-            top: calc(72px + 10px + 45px - 8px);
-            padding-left: 17px;
-            width: calc(100% - 2*10px);
-            border-bottom-left-radius: 8px;
-            border-bottom-right-radius: 8px;
-            background-color: #E7E7E7;
-            display: flex;
-            flex-direction: column;
-            row-gap: 16px;
+    & > div {
+      position: absolute;
+      top: calc(72px + 10px + 45px - 8px);
+      padding-left: 17px;
+      width: calc(100% - 2 * 10px);
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      background-color: #e7e7e7;
+      display: flex;
+      flex-direction: column;
+      row-gap: 16px;
 
       div {
         height: 39px;
@@ -341,16 +350,16 @@ const HeaderStyles = styled.header`
       & > div:nth-of-type(2) {
         column-gap: 5px;
 
-                svg {
-                    width: 16px;
-                }
-
-                img {
-                    width: 41px;
-                    height: 41px;
-                }
-            }
+        svg {
+          width: 16px;
         }
+
+        img {
+          width: 41px;
+          height: 41px;
+        }
+      }
+    }
 
     & > div {
       display: flex;
