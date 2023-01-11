@@ -19,7 +19,7 @@ export default function Login() {
 
   useEffect(() => {
     if (userData !== null) {
-      navigate("/");
+      navigate("/home");
     }
   });
 
@@ -35,7 +35,7 @@ export default function Login() {
       .then((response) => {
         setUserData(response.data);
         saveUser(response.data);
-        navigate("/");
+        navigate("/home");
       })
       .catch((error) => {
         Swal.fire({

@@ -1,2 +1,2 @@
-export const postsURL = "http://localhost:4000/posts?limit=20";
-export const hashtagURL = "http://localhost:4000/hashtag/:hashtag?limit=20"
+export const postsURL = "https://linkr-api-kcil.onrender.com/posts?limit=20";
+export const hashtagURL = "https://linkr-api-kcil.onrender.com/hashtag/:hashtag?limit=20"

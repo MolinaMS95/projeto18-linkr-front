@@ -6,7 +6,6 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import { createGlobalStyle } from "styled-components";
 import "./constants/font.css";
-import Header from './components/Header.js';
 import UserPostsPage from './pages/UserPostsPage.js';
 
 export const UserContext = createContext();
@@ -21,12 +20,11 @@ export default function App() {
       <GlobalStyle />
       <UserContext.Provider value={{userData, setUserData}}>
         <BrowserRouter>
-          <Header refresh={refresh} setRefresh={setRefresh}/>
           <Routes>
-            <Route path="/" element={<HomePage set={setUserData}/>} />
+            <Route path="/home" element={<HomePage set={setUserData} refresh={refresh} setRefresh={setRefresh}/>} />
             <Route path="/hashtag" element={<HashtagPage/>} />
             <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<LoginPage />} />
             <Route path="/cadastro" element={<SignUpPage />} />
             <Route path='/user/:id' element={<UserPostsPage refresh={refresh}/>}/>
           </Routes>

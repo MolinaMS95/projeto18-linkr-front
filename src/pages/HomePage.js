@@ -2,24 +2,22 @@ import styled from "styled-components";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { UserContext } from "../App";
-import { useNavigate } from "react-router-dom";
 import "../constants/font.css";
 import Post from "../components/Post.js";
 import Publish from "../components/Publish.js";
 import { postsURL } from "../constants/urls.js";
 import ClipLoader from "react-spinners/ClipLoader";
 import Swal from "sweetalert2";
+import Header from "../components/Header";
 
 export default function HomePage(props) {
   const {userData} = useContext(UserContext);
-  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   useEffect(() => {
     getPosts();
   }, []);
   function getPosts() {
-    console.log("oi");
     setPosts([]);
     setLoadingPosts(true);
     axios
@@ -41,6 +39,7 @@ export default function HomePage(props) {
   }
   return (
     <Container>
+      <Header refresh={props.refresh} setRefresh={props.setRefresh}/>
       <Title>timeline</Title>
       <Publish getPosts={getPosts} />
       {loadingPosts && (
@@ -58,7 +57,7 @@ export default function HomePage(props) {
         <Padding>There are no posts yet</Padding>
       )}
       {posts.map((data) => {
-        return <Post postData={data} />;
+        return <Post key={data.id} postData={data} />;
       })}
     </Container>
   );
