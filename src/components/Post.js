@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 export default function Post(props) {
@@ -6,13 +7,14 @@ export default function Post(props) {
   const [posts, setPosts] = useState([]);
   const [postUrl, setPostUrl] = useState();
   const [postText, setPostText] = useState();
+  const navigate = useNavigate();
 
   function handleSubmitPost() {
 
   }
 
   return (
-    <Container>
+    <Container key={postData.id}>
       <LeftBox>
         <UserImg src={postData.userimage}></UserImg>
         <Likes>
@@ -21,7 +23,7 @@ export default function Post(props) {
         </Likes>
       </LeftBox>
       <RightBox>
-        <UserName>{postData.username}</UserName>
+        <UserName onClick={() => navigate('/user/' + postData.userid)}>{postData.username}</UserName>
         <Content>{postData.content}</Content>
         <UrlDisplay href={postData.url} target="_blank">
           <UrlContent>

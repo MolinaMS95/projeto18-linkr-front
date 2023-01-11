@@ -14,16 +14,15 @@ export default function Header() {
     const navigate = useNavigate();
     const [foundUsers, setFoundUsers] = useState([]);
 
-    const localhost = 'http://localhost:4000';
     const API_URL = 'https://linkr-api-kcil.onrender.com';
 
     const token = 'aaaaa';
 
     function handleSearchBar(e) {
-        if (e.target.value.length < 3) return;
+        if (e.target.value.trim().length < 3) return;
 
         const config = {headers: {'Authorization': 'Bearer ' + token}};
-        const url = searchURL + e.target.value;
+        const url = API_URL + e.target.value.trim();
 
         axios.get(url, config)
             .then(({data}) => setFoundUsers(data))

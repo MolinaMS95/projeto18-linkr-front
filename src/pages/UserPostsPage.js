@@ -2,39 +2,51 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { UserContext } from '../App.js';
+import { refreshContext, UserContext } from '../App.js';
 import { AiOutlineHeart } from "react-icons/ai";
 import Header from '../components/Header.js';
-import { hashtagURL, userPostsURL } from '../constants/urls.js';
+import { followURL, hashtagURL, userPostsURL } from '../constants/urls.js';
+import Post from '../components/Post.js';
+import BeatLoader from 'react-spinners/BeatLoader.js';
 
-export default function UserPostsPage({refresh}) {
-    // const {userData} = useContext(UserContext);
+export default function UserPostsPage() {
+    const {userData} = useContext(UserContext);
+    const [refresh, setRefresh] = useContext(refreshContext);
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const {id: userid} = useParams();
+    const [disabled, setDisabled] = useState(false);
+    const [hidden, setHidden] = useState(true);
+    const [isFollower, setIsFollower] = useState(false);
 
     const loaded = (Object.keys(user).length !== 0);
 
     const posts = (loaded) ? user.posts : [];
 
-    const token = 'aaaaa';
-    const config = {headers: {'Authorization': 'Bearer ' + token}};
+    const config = {headers: {'Authorization': 'Bearer ' + userData.token}};
+
+    useEffect(request, [refresh]);
 
     function request() {
         const url = userPostsURL + userid;
 
         axios.get(url, config)
-            .then(({data}) => setUser(data))
+            .then(generalHandle)
             .catch(() => navigate('/'));
     }
 
-    useEffect(request, [refresh]);
+    function generalHandle({data}) {
+        setUser(data);
+        setHidden(data.requesterid === Number(userid));
+        setIsFollower(data.boolFollowing === '1');
+        setDisabled(false);
+    }
 
     function like(postid) {
         console.log(postid, userid);
     }
 
-    function Post({id: postid, url, content, numberOfLikes, hashtags}) {
+    function UserPost({id: postid, url, content, numberOfLikes, hashtags}) {
         if (hashtags[0] === null) hashtags.pop();
 
         function PostHashtag({id: hashtagid, name}) {
@@ -51,7 +63,7 @@ export default function UserPostsPage({refresh}) {
         }
 
         return (
-            <div key={postid} onClick={navigateWithLink}>
+            <div key={postid}>
                 <aside>
                     <img src={user.pictureurl} alt='Profile picture'/>
                     <div>
@@ -65,7 +77,7 @@ export default function UserPostsPage({refresh}) {
                 <section>
                     <span>{user.username}</span>
                     <p>{content}{hashtags.map(PostHashtag)}</p>
-                    <div>
+                    <div onClick={navigateWithLink}>
                         <div>
                             <p>aaaaaaaa aaaaaaaa</p>
                             <p>aaaaaaaa aaaaaaaa</p>
@@ -95,18 +107,42 @@ export default function UserPostsPage({refresh}) {
         );
     }
 
+    function handleButtons() {
+        setIsFollower(!isFollower);
+        setDisabled(false);
+        setRefresh(!refresh);
+    }
+
+    function follow() {
+        if (disabled) return;
+
+        setDisabled(true);
+
+        axios.put(followURL + userid, {}, config)
+            .then(handleButtons)
+            .catch(() => navigate('/'));
+    }
+
     return (
-        <UserPostsPageStyles>
+        <UserPostsPageStyles hidden={hidden} isFollower={isFollower}>
             <Header/>
             <section>
                 <div>
                     <img src={user.pictureurl} alt=''/>
                     <h1>{user.username}’s posts</h1>
                 </div>
-                {posts.map(Post)}
+                {posts.map(UserPost)}
             </section>
             <div>
-                <button>Follow</button>
+                <button onClick={follow} disabled={disabled}>
+                    {
+                        disabled ? (
+                            <BeatLoader/>
+                        ) : (
+                            isFollower ? 'Unfollow' : 'Follow'
+                        )
+                    }
+                </button>
                 <aside>
                     <span>trending</span>
                     <hr/>
@@ -280,13 +316,17 @@ const UserPostsPageStyles = styled.main`
             height: 31px;
             border: none;
             border-radius: 5px;
-            background: #1877F2;
+            background-color: ${({isFollower}) => isFollower ? '#FFFFFF' : '#1877F2'};
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-family: 'Lato', sans-serif;
             font-weight: 700;
             font-size: 14px;
             line-height: 17px;
-            color: #FFFFFF;
+            color: ${({isFollower}) => isFollower ? '#1877F2' : '#FFFFFF'};
             flex-shrink: 0;
+            visibility: ${({hidden}) => hidden ? 'hidden' : 'visible'};
         }
 
         aside {

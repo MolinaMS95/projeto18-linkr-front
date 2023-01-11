@@ -5,6 +5,8 @@ export const postsURL = localhost + "/posts?limit=20";
 
 export const hashtagURL = localhost + "/hashtag/:hashtag?limit=20";
 
-export const searchURL = localhost + "/search/";
+export const searchURL = API_URL + "/search/";
 
-export const userPostsURL = localhost + "/user/";
+export const userPostsURL = API_URL + "/user/";
+
+export const followURL = API_URL + "/setfollow/";

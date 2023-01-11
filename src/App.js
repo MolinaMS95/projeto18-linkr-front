@@ -26,7 +26,7 @@ export default function App() {
             <Route path="/" element={<HomePage set={setUserData}/>} />
             <Route path="/hashtag" element={<HashtagPage/>} />
             <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
-            <Route path='/user/:id' element={<UserPostsPage refresh={refreshState[0]}/>}/>
+            <Route path='/user/:id' element={<UserPostsPage/>}/>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/cadastro" element={<SignUpPage />} />
           </Routes>
