@@ -39,7 +39,7 @@ export default function HomePage(props) {
   }
   return (
     <Container>
-      <Header refresh={props.refresh} setRefresh={props.setRefresh}/>
+      <Header/>
       <Title>timeline</Title>
       <Publish getPosts={getPosts} />
       {loadingPosts && (

@@ -1,3 +1,11 @@
+import axios from 'axios';
+import { useContext, useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { refreshContext, UserContext } from '../App';
+import magnifier from '../constants/magnifier.svg';
+import { AiOutlineDown } from 'react-icons/ai';
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { DebounceInput } from "react-debounce-input";
@@ -9,10 +17,11 @@ import menuButton from "../constants/menuButton.svg";
 import magnifier from "../constants/magnifier.svg";
 import Swal from "sweetalert2";
 
-export default function Header({ refresh, setRefresh }) {
+export default function Header() {
+    const {refresh, setRefresh} = useContext(refreshContext);
+    const navigate = useNavigate();
+    const [foundUsers, setFoundUsers] = useState([]);
   const { userData, setUserData } = useContext(UserContext);
-  const navigate = useNavigate();
-  const [foundUsers, setFoundUsers] = useState([]);
   const [showMenu, setShowMenu] = useState(false);
 
   function logout(token) {
@@ -46,11 +55,10 @@ export default function Header({ refresh, setRefresh }) {
       .then(({ data }) => setFoundUsers(data))
       .catch(() => navigate("/"));
 
-    setTimeout(() => {
-      e.target.value = "";
-      setFoundUsers([]);
-    }, 3000);
-  }
+        setTimeout(() => {
+            setFoundUsers([]);
+        }, 3000);
+    }
 
   function navigateToUserPosts(id) {
     navigate("/user/" + id);
@@ -67,40 +75,44 @@ export default function Header({ refresh, setRefresh }) {
     );
   }
 
-  return (
-    <HeaderStyles>
-      <section>
-        <h1 onClick={() => navigate("/")}>linkr</h1>
-        <div>
-          <DebounceInput
-            placeholder="Search for people"
-            minLength={3}
-            debounceTimeout={300}
-            onChange={handleSearchBar}
-          />
-          <div>{foundUsers.map(Options)}</div>
-        </div>
-        <div onClick={() => setShowMenu(!showMenu)}>
-          <img src={showMenu ? menuButton : headerButton} alt="" />
-          <img src={"a"} alt="Profile picture" />
-        </div>
-        {showMenu && (
+    return (
+        <HeaderStyles>
+            <section>
+                <h1>linkr</h1>
+                <div>
+                    <DebounceInput
+                        placeholder='Search for people'
+                        minLength={3}
+                        debounceTimeout={300}
+                        onChange={handleSearchBar}
+                    />
+                    <div>
+                        {foundUsers.map(Options)}
+                    </div>
+                </div>
+                <div onClick={() => setShowMenu(!showMenu)}>
+                    <AiOutlineDown/>
+                    <img src={'a'} alt='Profile picture'/>
+                </div>
+                {showMenu && (
           <LogoutMenu>
             <p onClick={() => logout(userData)}>Logout</p>
           </LogoutMenu>
         )}
-      </section>
-      <div>
-        <DebounceInput
-          placeholder="Search for people"
-          minLength={3}
-          debounceTimeout={300}
-          onChange={handleSearchBar}
-        />
-        <div>{foundUsers.map(Options)}</div>
-      </div>
-    </HeaderStyles>
-  );
+            </section>
+            <div>
+                <DebounceInput
+                    placeholder='Search for people'
+                    minLength={3}
+                    debounceTimeout={300}
+                    onChange={handleSearchBar}
+                />
+                <div>
+                    {foundUsers.map(Options)}
+                </div>
+            </div>
+        </HeaderStyles>
+    );
 }
 
 const LogoutMenu = styled.div`
@@ -205,22 +217,23 @@ const HeaderStyles = styled.header`
       }
     }
 
-    & > div:nth-of-type(2) {
-      display: flex;
-      column-gap: 10px;
+        &>div:nth-of-type(2) {
+            display: flex;
+            align-items: center;
+            column-gap: 10px;
 
-      img:nth-of-type(1) {
-        width: 20px;
-      }
+            svg {
+                font-size: 20px;
+            }
 
-      img:nth-of-type(2) {
-        width: 53px;
-        height: 53px;
-        border-radius: 50%;
-        object-fit: cover;
-      }
+            img {
+                width: 53px;
+                height: 53px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+        }
     }
-  }
 
   & > div {
     width: 100%;
@@ -236,18 +249,17 @@ const HeaderStyles = styled.header`
       width: calc(100% - 2 * 10px);
     }
 
-    & > div {
-      position: absolute;
-      top: calc(72px + 10px + 45px - 8px);
-      padding-left: 17px;
-      width: calc(100% - 2 * 10px);
-      /* height: 100px; */
-      border-bottom-left-radius: 8px;
-      border-bottom-right-radius: 8px;
-      background-color: #e7e7e7;
-      display: flex;
-      flex-direction: column;
-      row-gap: 16px;
+        &>div {
+            position: absolute;
+            top: calc(72px + 10px + 45px - 8px);
+            padding-left: 17px;
+            width: calc(100% - 2*10px);
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            background-color: #E7E7E7;
+            display: flex;
+            flex-direction: column;
+            row-gap: 16px;
 
       div {
         height: 39px;
@@ -329,16 +341,16 @@ const HeaderStyles = styled.header`
       & > div:nth-of-type(2) {
         column-gap: 5px;
 
-        img:nth-of-type(1) {
-          width: 16px;
-        }
+                svg {
+                    width: 16px;
+                }
 
-        img:nth-of-type(2) {
-          width: 41px;
-          height: 41px;
+                img {
+                    width: 41px;
+                    height: 41px;
+                }
+            }
         }
-      }
-    }
 
     & > div {
       display: flex;

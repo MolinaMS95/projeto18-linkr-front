@@ -3,13 +3,17 @@ import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { UserContext } from '../App.js';
-import heart from '../constants/heart.svg';
+import { AiOutlineHeart } from "react-icons/ai";
+import Header from '../components/Header.js';
 
 export default function UserPostsPage({refresh}) {
-    // const userData = useContext(UserContext);
+    // const {userData} = useContext(UserContext);
     const navigate = useNavigate();
     const [user, setUser] = useState({});
     const {id: userid} = useParams();
+
+    const localhost = 'http://localhost:4000';
+    const API_URL = 'https://linkr-api-kcil.onrender.com';
 
     const loaded = (Object.keys(user).length !== 0);
 
@@ -19,7 +23,7 @@ export default function UserPostsPage({refresh}) {
 
     function request() {
         const config = {headers: {'Authorization': 'Bearer ' + token}};
-        const url = 'http://localhost:4000/user/' + userid;
+        const url = API_URL + '/user/' + userid;
 
         axios.get(url, config)
             .then(({data}) => setUser(data))
@@ -49,9 +53,8 @@ export default function UserPostsPage({refresh}) {
                 <aside>
                     <img src={user.pictureurl} alt='Profile picture'/>
                     <div>
-                        <img
+                        <AiOutlineHeart
                             onClick={() => like(postid)}
-                            src={heart}
                             alt='Like'
                         />
                         <span>{(numberOfLikes === null) ? 0 : numberOfLikes}</span>
@@ -92,6 +95,7 @@ export default function UserPostsPage({refresh}) {
 
     return (
         <UserPostsPageStyles>
+            <Header/>
             <section>
                 <div>
                     <img src={user.pictureurl} alt=''/>
@@ -168,10 +172,10 @@ const UserPostsPageStyles = styled.main`
                     display: flex;
                     flex-direction: column;
                     align-items: center;
+                    row-gap: 4px;
 
-                    img {
-                        margin-bottom: 4px;
-                        width: 20px;
+                    svg {
+                        font-size: 20px;
                     }
 
                     span {
@@ -355,9 +359,10 @@ const UserPostsPageStyles = styled.main`
                     }
 
                     div {
-                        img {
-                            margin-bottom: 10px;
-                            width: 17px;
+                        row-gap: 10px;
+
+                        svg {
+                            font-size: 17px;
                         }
 
                         span {
