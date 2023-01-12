@@ -1,97 +1,97 @@
-import axios from "axios";
-import { DebounceInput } from "react-debounce-input";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { refreshContext, UserContext } from "../App";
-import magnifier from "../constants/magnifier.svg";
-import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
-import { useContext, useEffect, useState } from "react";
+import axios from 'axios';
+import { useContext, useEffect, useState } from 'react';
+import { DebounceInput } from 'react-debounce-input';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { refreshContext, UserContext } from '../App';
+import magnifier from '../constants/magnifier.svg';
+import { AiOutlineDown, AiOutlineUp } from 'react-icons/ai';
+import { searchURL } from '../constants/urls';
 import Swal from "sweetalert2";
 
 export default function Header() {
-  const { refresh, setRefresh } = useContext(refreshContext);
-  const navigate = useNavigate();
-  const [foundUsers, setFoundUsers] = useState([]);
-  const { userData, setUserData } = useContext(UserContext);
-  const [showMenu, setShowMenu] = useState(false);
-  const userURL = `https://linkr-api-kcil.onrender.com/user`;
-  const [user, setUser] = useState(null);
+    const {userData} = useContext(UserContext);
+    const [refresh, setRefresh] = useContext(refreshContext);
+    const navigate = useNavigate();
+    const [foundUsers, setFoundUsers] = useState([]);
+    const [showMenu, setShowMenu] = useState(false);
+    const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get(userURL, {
-        headers: {
-          Authorization: `Bearer ${userData}`,
-        },
-      })
-      .then((response) => {
-        setUser(response.data);
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: error.response.data.message,
-          footer: `Error status ${error.response.status}`,
+    const userURL = `https://linkr-api-kcil.onrender.com/user`;
+
+    function handleSearchBar(e) {
+        if (e.target.value.trim().length < 3) return;
+
+        const config = {headers: {'Authorization': 'Bearer ' + userData}};
+        const url = searchURL + e.target.value.trim();
+
+        axios
+          .get(url, config)
+          .then(({data}) => setFoundUsers(data))
+          .catch(() => navigate("/"));
+
+        setTimeout(() => setFoundUsers([]), 3000);
+    }
+    
+    useEffect(() => {
+        axios
+          .get(userURL, {
+              headers: {
+                  Authorization: `Bearer ${userData}`,
+              },
+          })
+          .then((response) => {
+              setUser(response.data);
+          })
+          .catch((error) => {
+              Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: error.response.data.message,
+                  footer: `Error status ${error.response.status}`,
+              });
+          });
+    }, []);
+    
+    function logout(token) {
+      axios
+        .delete(`https://linkr-api-kcil.onrender.com/logout`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(() => {
+          localStorage.removeItem("user");
+          setUserData(null);
+          navigate("/");
+        })
+        .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.response.data.message,
+            footer: `Error status ${error.response.status}`,
+          });
         });
-      });
-  }, []);
+    }
+    
+    function navigateToUserPosts(id) {
+        navigate("/user/" + id);
+        setFoundUsers([]);
+        setRefresh(!refresh);
+    }
 
-  function logout(token) {
-    axios
-      .delete(`https://linkr-api-kcil.onrender.com/logout`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        localStorage.removeItem("user");
-        setUserData(null);
-        navigate("/");
-      })
-      .catch((error) => {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: error.response.data.message,
-          footer: `Error status ${error.response.status}`,
-        });
-      });
-  }
-
-  function handleSearchBar(e) {
-    if (e.target.value.length < 3) return;
-
-    const config = { headers: { Authorization: `Bearer ${userData}` } };
-    const url = `https://linkr-api-kcil.onrender.com/search/${e.target.value}`;
-
-    axios
-      .get(url, config)
-      .then(({ data }) => setFoundUsers(data))
-      .catch(() => navigate("/"));
-
-    setTimeout(() => {
-      setFoundUsers([]);
-    }, 3000);
-  }
-
-  function navigateToUserPosts(id) {
-    navigate("/user/" + id);
-    setFoundUsers([]);
-    setRefresh(!refresh);
-  }
-
-  function Options({ id, username, pictureurl }) {
-    return (
-      <div key={id}>
-        <img src={pictureurl} alt=""></img>
-        <span onClick={() => navigateToUserPosts(id)}>{username}</span>
-      </div>
-    );
-  }
+    function Options({ id, username, pictureurl }) {
+        return (
+            <div key={id}>
+                <img src={pictureurl} alt=""></img>
+                <span onClick={() => navigateToUserPosts(id)}>{username}</span>
+            </div>
+        );
+    }
 
   return (
     <HeaderStyles>
       <section>
-        <h1>linkr</h1>
+        <h1 onClick={() => navigate('/home')}>linkr</h1>
         <div>
           <DebounceInput
             placeholder="Search for people"
@@ -101,10 +101,10 @@ export default function Header() {
           />
           <div>{foundUsers.map(Options)}</div>
         </div>
-        <div onClick={() => setShowMenu(!showMenu)}>
+        <Modal onClick={() => setShowMenu(!showMenu)}>
           {!showMenu ? <AiOutlineDown /> : <AiOutlineUp/>}
           <img src={user === null ? "" : user.pictureurl} alt="foto do usuário" />
-        </div>
+        </Modal>
         {showMenu && (
           <LogoutMenu>
             <p onClick={() => logout(userData)}>Logout</p>
@@ -138,7 +138,7 @@ const LogoutMenu = styled.div`
 
   padding-top: 10px;
   padding-left: 47px;
-
+  
   p {
     font-family: "Lato";
     font-weight: 700;
@@ -365,4 +365,34 @@ const HeaderStyles = styled.header`
       display: flex;
     }
   }
+`;
+
+const Modal = styled.div`
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+
+    svg {
+        font-size: 20px;
+    }
+
+    img {
+        width: 53px;
+        height: 53px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    @media (max-width: 475px) {
+        column-gap: 5px;
+
+        svg {
+            width: 16px;
+        }
+
+        img {
+            width: 41px;
+            height: 41px;
+        }
+    }
 `;

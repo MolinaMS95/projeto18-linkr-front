@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import { createGlobalStyle } from "styled-components";
 import "./constants/font.css";
+import UserPostsPage from './pages/UserPostsPage.js';
 
 export const UserContext = createContext();
 export const refreshContext = createContext();
@@ -13,18 +14,19 @@ export const refreshContext = createContext();
 export default function App() {
   const localUser = JSON.parse(localStorage.getItem("user"));
   const [userData, setUserData] = useState(localUser);
-  const [refreshState, setRefreshState] = useState(false);
+  const refreshState = useState(false);
  
   return (
     <>
       <GlobalStyle />
       <UserContext.Provider value={{userData, setUserData}}>
-      <refreshContext.Provider value={{refreshState, setRefreshState}}>
+      <refreshContext.Provider value={refreshState}>
         <BrowserRouter>
           <Routes>
             <Route path="/home" element={<HomePage set={setUserData} />} />
             <Route path="/hashtag" element={<HashtagPage/>} />
             <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
+            <Route path='/user/:id' element={<UserPostsPage/>}/>
             <Route path="/" element={<LoginPage />} />
             <Route path="/cadastro" element={<SignUpPage />} />
           </Routes>

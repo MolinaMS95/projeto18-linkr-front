@@ -71,7 +71,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background: #333333;
-  @media (max-width: 425px) {
+  @media (max-width: 475px) {
     margin-top: calc(72px + 65px);
   }
 `;
