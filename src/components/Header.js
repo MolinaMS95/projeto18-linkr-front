@@ -10,7 +10,7 @@ import { searchURL } from '../constants/urls';
 import Swal from "sweetalert2";
 
 export default function Header() {
-    const {userData} = useContext(UserContext);
+    const {userData, setUserData} = useContext(UserContext);
     const [refresh, setRefresh] = useContext(refreshContext);
     const navigate = useNavigate();
     const [foundUsers, setFoundUsers] = useState([]);
