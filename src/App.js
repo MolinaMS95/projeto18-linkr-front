@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
-import HashtagPage from "./pages/Hashtag";
+import HashtagPage from "./pages/HashtagPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import { createGlobalStyle } from "styled-components";
@@ -24,7 +24,6 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/timeline" element={<HomePage set={setUserData} />} />
-            <Route path="/hashtag" element={<HashtagPage/>} />
             <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
             <Route path='/user/:id' element={<UserPostsPage/>}/>
             <Route path="/" element={<LoginPage />} />

@@ -9,9 +9,10 @@ import { postsURL } from "../constants/urls.js";
 import ClipLoader from "react-spinners/ClipLoader";
 import Swal from "sweetalert2";
 import Header from "../components/Header";
+import TrendingSidebar from "../components/TrendingSidebar";
 
 export default function HomePage(props) {
-  const {userData} = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   useEffect(() => {
@@ -39,26 +40,31 @@ export default function HomePage(props) {
   }
   return (
     <Container>
-      <Header/>
+      <Header />
       <Title>timeline</Title>
-      <Publish getPosts={getPosts} />
-      {loadingPosts && (
-        <Padding>
-          <ClipLoader
-            color={"#FFFFFF"}
-            loading={loadingPosts}
-            size={150}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-          />
-        </Padding>
-      )}
-      {!loadingPosts && posts.length === 0 && (
-        <Padding>There are no posts yet</Padding>
-      )}
-      {posts.map((data) => {
-        return <Post key={data.id} postData={data} />;
-      })}
+      <ContentBox>
+        <TimelineColumn>
+          <Publish getPosts={getPosts} />
+          {loadingPosts && (
+            <Padding>
+              <ClipLoader
+                color={"#FFFFFF"}
+                loading={loadingPosts}
+                size={150}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            </Padding>
+          )}
+          {!loadingPosts && posts.length === 0 && (
+            <Padding>There are no posts yet</Padding>
+          )}
+          {posts.map((data) => {
+            return <Post key={data.id} postData={data} />;
+          })}
+        </TimelineColumn>
+        <TrendingSidebar />
+      </ContentBox>
     </Container>
   );
 }
@@ -84,6 +90,17 @@ const Title = styled.p`
   width: 100%;
   max-width: 611px;
 `;
+const ContentBox = styled.div`
+    display: flex;
+    justify-content: center;
+`
+
+const TimelineColumn = styled.div`
+      flex-direction: column;
+      align-items: center;
+      padding-right: 2%;
+`
+
 const Padding = styled.div`
   padding-top: 30px;
 `;

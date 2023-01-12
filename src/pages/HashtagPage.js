@@ -16,11 +16,9 @@ import Publish from "../components/Publish.js";
 
 export default function HashtagPage(props) {
 
-  // const userData = useContext(UserContext);
-  // const navigate = useNavigate();
+  const { userData } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
-
   const params = useParams().hashtag
   let hashtagName = "timeline"
   if (params) {
@@ -36,13 +34,12 @@ export default function HashtagPage(props) {
   }, []);
 
   function getPosts() {
-    console.log("post");
     setPosts([]);
     setLoadingPosts(true);
     axios
       .get(postsURL, {
         headers: {
-          Authorization: `Bearer 14b85cfe-b788-4f45-b58a-a6e4589b0f82`,
+          Authorization: `Bearer ${userData}`,
         },
       })
       .then((data) => {
@@ -56,16 +53,16 @@ export default function HashtagPage(props) {
         console.log(data);
       });
   }
-
   function getHashtag(hashtag) {
-    console.log("post");
     setPosts([]);
     setLoadingPosts(true);
     axios
       .get(hashtagURL, {
-        body: {hashtag},
+        body: {
+          hashtag
+        },
         headers: {
-          Authorization: `Bearer 14b85cfe-b788-4f45-b58a-a6e4589b0f82`,
+          Authorization: `Bearer ${userData}`,
         },
       })
       .then((data) => {
