@@ -23,11 +23,11 @@ export default function App() {
       <refreshContext.Provider value={refreshState}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<HomePage set={setUserData}/>} />
+            <Route path="/home" element={<HomePage set={setUserData} />} />
             <Route path="/hashtag" element={<HashtagPage/>} />
             <Route path="/hashtag/:hashtag" element={<HashtagPage/>} />
             <Route path='/user/:id' element={<UserPostsPage/>}/>
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/" element={<LoginPage />} />
             <Route path="/cadastro" element={<SignUpPage />} />
           </Routes>
         </BrowserRouter>
