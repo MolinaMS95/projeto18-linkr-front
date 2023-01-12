@@ -1,5 +1,5 @@
 const API_URL = 'https://linkr-api-kcil.onrender.com';
-const localhost = "http://localhost:4000";
+// const API_URL = "http://localhost:4000";
 
 export const postsURL = API_URL + "/posts?limit=20";
 

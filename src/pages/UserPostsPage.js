@@ -8,6 +8,7 @@ import Header from '../components/Header.js';
 import { followURL, hashtagURL, userPostsURL } from '../constants/urls.js';
 import Post from '../components/Post.js';
 import BeatLoader from 'react-spinners/BeatLoader.js';
+import Swal from 'sweetalert2';
 
 export default function UserPostsPage() {
     const {userData} = useContext(UserContext);
@@ -120,7 +121,18 @@ export default function UserPostsPage() {
 
         axios.put(followURL + userid, {}, config)
             .then(handleButtons)
-            .catch(() => navigate('/'));
+            .catch(followError);
+    }
+
+    function followError() {
+        Swal.fire({
+            title: 'Error!',
+            text: 'It was not possible to execute the operation.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+        });
+
+        setDisabled(false);
     }
 
     return (
@@ -333,7 +345,6 @@ const UserPostsPageStyles = styled.main`
             padding-top: 9px;
             padding-bottom: 30px;
             width: 301px;
-            height: 100%;
             border-radius: 16px;
             background-color: #171717;
 

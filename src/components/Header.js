@@ -22,7 +22,7 @@ export default function Header() {
     function handleSearchBar(e) {
         if (e.target.value.trim().length < 3) return;
 
-        const config = {headers: {'Authorization': 'Bearer ' + userData}};
+        const config = {headers: {'Authorization': 'Bearer ' + userData.token}};
         const url = searchURL + e.target.value.trim();
 
         axios
@@ -37,7 +37,7 @@ export default function Header() {
         axios
           .get(userURL, {
               headers: {
-                  Authorization: `Bearer ${userData}`,
+                  'Authorization': `Bearer ${userData.token}`
               },
           })
           .then((response) => {
@@ -91,7 +91,7 @@ export default function Header() {
   return (
     <HeaderStyles>
       <section>
-        <h1 onClick={() => navigate('/home')}>linkr</h1>
+        <h1 onClick={() => navigate('/timeline')}>linkr</h1>
         <div>
           <DebounceInput
             placeholder="Search for people"
