@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 export default function TrendingSidebar (){
 
     const [hashtag, setHashtag] = useState([]);
+    console.log(hashtag);
     useEffect(() => {
         getHashtagList();
         console.log(hashtag)

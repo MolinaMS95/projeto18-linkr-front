@@ -14,6 +14,8 @@ export default function HomePage(props) {
   const {userData} = useContext(UserContext);
   const [posts, setPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
+  console.log(posts);
+
   useEffect(() => {
     getPosts();
   }, []);
@@ -23,7 +25,7 @@ export default function HomePage(props) {
     axios
       .get(postsURL, {
         headers: {
-          Authorization: `Bearer ${userData}`,
+          Authorization: `Bearer ${userData.token}`,
         },
       })
       .then((data) => {
