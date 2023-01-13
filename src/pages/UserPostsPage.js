@@ -47,7 +47,7 @@ export default function UserPostsPage() {
         console.log(postid, userid);
     }
 
-    function UserPost({id: postid, url, content, numberOfLikes, hashtags}) {
+    function UserPost({id: postid, url, urltitle, urldescription, urlimage, content, numberOfLikes, hashtags}) {
         if (hashtags[0] === null) hashtags.pop();
 
         function PostHashtag({id: hashtagid, name}) {
@@ -55,7 +55,7 @@ export default function UserPostsPage() {
                 <span
                     key={hashtagid}
                     onClick={() => navigate('/hashtag/' + name)}
-                > #{name}</span>
+                > {name}</span>
             );
         }
 
@@ -76,15 +76,15 @@ export default function UserPostsPage() {
                     </div>
                 </aside>
                 <section>
-                    <span>{user.username}</span>
+                    <span onClick={() => navigate('/user/' + user.id)}>{user.username}</span>
                     <p>{content}{hashtags.map(PostHashtag)}</p>
                     <div onClick={navigateWithLink}>
                         <div>
-                            <p>aaaaaaaa aaaaaaaa</p>
-                            <p>aaaaaaaa aaaaaaaa</p>
+                            <p>{urltitle}</p>
+                            <p>{urldescription}</p>
                             <a>{url}</a>
                         </div>
-                        <img src='http://cbissn.ibict.br/images/phocagallery/galeria2/thumbs/phoca_thumb_l_image03_grd.png' alt=''/>
+                        <img src={urlimage} alt={urltitle}/>
                     </div>
                 </section>
             </div>
@@ -140,7 +140,7 @@ export default function UserPostsPage() {
             <Header/>
             <section>
                 <div>
-                    <img src={user.pictureurl} alt=''/>
+                    <img src={user.pictureurl} alt={user.username}/>
                     <h1>{user.username}’s posts</h1>
                 </div>
                 {posts.map(UserPost)}

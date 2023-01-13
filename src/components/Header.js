@@ -20,17 +20,23 @@ export default function Header() {
     const userURL = `https://linkr-api-kcil.onrender.com/user`;
 
     function handleSearchBar(e) {
-        if (e.target.value.trim().length < 3) return;
+        if (e.target.value.trim().length < 3) {
+          setFoundUsers([]);
+          return;
+        };
 
         const config = {headers: {'Authorization': 'Bearer ' + userData.token}};
         const url = searchURL + e.target.value.trim();
 
         axios
           .get(url, config)
-          .then(({data}) => setFoundUsers(data))
+          .then(getUsers)
           .catch(() => navigate("/"));
+    }
 
-        setTimeout(() => setFoundUsers([]), 3000);
+    function getUsers({data}) {
+      setFoundUsers(data);
+      // setTimeout(() => setFoundUsers([]), 5000);
     }
     
     useEffect(() => {
@@ -79,11 +85,12 @@ export default function Header() {
         setRefresh(!refresh);
     }
 
-    function Options({ id, username, pictureurl }) {
+    function Options({ id, username, pictureurl, follows }) {
         return (
             <div key={id}>
-                <img src={pictureurl} alt=""></img>
+                <img src={pictureurl} alt={username + `'s picture`}></img>
                 <span onClick={() => navigateToUserPosts(id)}>{username}</span>
+                <span>{follows ? '• following' : ''}</span>
             </div>
         );
     }
@@ -198,21 +205,30 @@ const HeaderStyles = styled.header`
           height: 39px;
           display: flex;
           align-items: center;
-          column-gap: 12px;
 
           img {
+            margin-right: 12px;
             width: 39px;
             height: 39px;
             border-radius: 50%;
             object-fit: cover;
           }
 
-          span {
+          span:nth-of-type(1) {
+            margin-right: 4px;
             font-family: "Lato", sans-serif;
             font-weight: 400;
             font-size: 19px;
             line-height: 23px;
             color: #515151;
+          }
+
+          span:nth-of-type(2) {
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            font-size: 19px;
+            line-height: 23px;
+            color: #C5C5C5;
           }
         }
 
@@ -274,21 +290,30 @@ const HeaderStyles = styled.header`
         height: 39px;
         display: flex;
         align-items: center;
-        column-gap: 12px;
 
         img {
+          margin-right: 12px;
           width: 39px;
           height: 39px;
           border-radius: 50%;
           object-fit: cover;
         }
 
-        span {
+        span:nth-of-type(1) {
+          margin-right: 4px;
           font-family: "Lato", sans-serif;
           font-weight: 400;
           font-size: 19px;
           line-height: 23px;
           color: #515151;
+        }
+
+        span:nth-of-type(2) {
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            font-size: 19px;
+            line-height: 23px;
+            color: #C5C5C5;
         }
       }
 
