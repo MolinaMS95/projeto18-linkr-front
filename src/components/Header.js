@@ -43,7 +43,7 @@ export default function Header() {
         axios
           .get(userURL, {
               headers: {
-                  'Authorization': `Bearer ${userData.token}`
+                  'Authorization': `Bearer ${userData}`
               },
           })
           .then((response) => {
